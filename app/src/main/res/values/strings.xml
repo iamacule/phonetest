@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">Phone Test</string>
+    <string name="author">Author</string>
+    <string name="author_name">An Pham</string>
+    <string name="email_address">Email : an.phamhung@gmail.com</string>
+    <string name="full_test">Full test</string>
+    <string name="phone_info">Phone information</string>
+    <string name="single_test">Single test</string>
+    <string name="guide">Guide</string>
+    <string name="start">START</string>
+    <string name="select">SELECT YOUR TEST MODE</string>
+    <string name="device">DEVICE</string>
+    <string name="os">OS</string>
+    <string name="system_display">SYSTEM DISPLAY</string>
+    <string name="internal_memory">INTERNAL MEMORY SIZE</string>
+    <string name="external_memory">EXTERNAL MEMORY SIZE</string>
+    <string name="telepony">TELEPONY</string>
+    <string name="share">Share us</string>
+    <string name="about">About us</string>
+    <string name="microphone_test">MICROPHONE TEST</string>
+    <string name="sound_test">SOUND TEST</string>
+    <string name="vibrate_test">VIBRATE TEST</string>
+    <string name="lcd_test">LCD SCREEN TEST</string>
+    <string name="lcd_guide">Touch on the screen for change color</string>
+    <string name="brightness_test">BRIGHTNESS TEST</string>
+    <string name="touch_test">TOUCH TEST</string>
+    <string name="touch_guide">Touch any point on the screen</string>
+    <string name="multitouch_test">MULTITOUCH TEST</string>
+    <string name="multitouch_guide">Touch with multi finger</string>
+    <string name="camera_test">CAMERA TEST</string>
+    <string name="flash_test">FLASH TEST</string>
+    <string name="flash_message">Press the button to turn On/Off the flash</string>
+    <string name="sensor_test">SENSOR TEST</string>
+    <string name="compass_test">COMPASS TEST</string>
+    <string name="wifi_test">WIFI TEST</string>
+    <string name="bluetooth_test">BLUETOOTH TEST</string>
+    <string name="battery_test">BATTERY TEST</string>
+    <string name="result">RESULT</string>
+    <string name="which_test">which_test</string>
+    <string name="pass">PASS</string>
+    <string name="skip">SKIP</string>
+    <string name="fail">FAIL</string>
+    <string name="stop">Stop</string>
+    <string name="record">Record</string>
+    <string name="refresh">Refresh</string>
+    <string name="play">Play</string>
+    <string name="press_record">Press Record button to record</string>
+    <string name="press_stop">Press Stop button to stop record</string>
+    <string name="press_play">Press Play button to hear your voice</string>
+    <string name="ask_hear">Do you hear your voice?</string>
+    <string name="toast_sound">Do you hear the music?</string>
+    <string name="toast_vibrate">Do you feel your device are vibrating?</string>
+    <string name="toast_brightness">Do you feel the brightness increasing?</string>
+    <string name="toast_camera">Tap the lens to open your camera</string>
+    <string name="toast_camera2">Do you see your picture?</string>
+    <string name="toast_camera3">You are canceled</string>
+    <string name="toast_flash_error">Your phone does not have flash</string>
+    <string name="notice">Notice</string>
+    <string name="ok">OK</string>
+    <string name="toast_brightness2">Please wait the Brightness Bar up to 100%</string>
+    <string name="message_sound">The music will start in : </string>
+    <string name="message_vibrate">Your phone will vibrate in : </string>
+    <string name="facebook_app_id">1551769841815901</string>
+    <string name="banner_ad_unit_id">ca-app-pub-1498631669155174/1453507243</string>
+    <string name="url">https://play.google.com/store/apps/details?id=phamhungan.com.phonetestv3</string>
+    <string name="url_market">market://details?id=phamhungan.com.phonetestv3</string>
+    <string name="rating_content">If this application useful,please rate us !</string>
+
+    <!-- Html-->
+    <string name="notice_full_test">
+        <![CDATA[
+        <p>Full test will check your phone by each part</p>
+        <p>-If current part is OK.Press button PASS</p>
+        <p>-If current part is does not work.Press button FAIL</p>
+        <p>-If you want to skip current part.Press button SKIP</p>
+        <p>Finally you will have a result table to show all your result</p>
+        <p><b>Now press START</b></p>
+        ]]>
+    </string>
+
+    <string name="message_show_hide_full">
+         <![CDATA[
+        <p>Press volume down button to Show/Hide result navigation</p>
+        <p>Press volume up button to Enable/Disable full screen mode</p>
+        ]]>
+    </string>
+
+    <string name="message_show_hide_single">
+         <![CDATA[
+        <p>Press volume up button to Enable/Disable full screen mode</p>
+        ]]>
+    </string>
+
+    <string name="message_show_hide_single_sensor">
+         <![CDATA[
+        <p>Press volume down button to Show/Hide result navigation</p>
+        ]]>
+    </string>
+
+    <string name="content">
+        <![CDATA[
+        <p>Phone Test is a best free app allows you to test all your device hardware</p>
+        <p>You want to buy a Android Phone or Android Tablet, but you do not make sure all that device hardware is operating correctly.</p>
+        <p>Do not worry about that, Phone Test will answer your question.</p>
+        <p>Test the following:</p>
+        <p>* INFORMATION</p>
+        <p>- Model</p>
+        <p>- Brand</p>
+        <p>- CPU</p>
+        <p>- RAM</p>
+        <p>- OS Version</p>
+        <p>- Memory</p>
+        <p>- Telephony</p><br/>
+        <p>* TEST HARDWARE</p>
+        <p>- Sound</p>
+        <p>- Vibration</p>
+        <p>- Microphone</p>
+        <p>- Brightness</p>
+        <p>- LCD Screen</p>
+        <p>- Touch</p>
+        <p>- MultiTouch</p>
+        <p>- Camera</p>
+        <p>- Flash</p>
+        <p>- Sensor</p>
+        <p>- Compass</p>
+        <p>- WIFI</p>
+        <p>- Bluetooth</p>
+        <p>- Battery</p>
+        ]]>
+    </string>
+
+</resources>
