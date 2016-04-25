@@ -10,7 +10,6 @@ import phamhungan.com.phonetestv3.ui.fragment.BlueToothFragment;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CompassFragment;
-import phamhungan.com.phonetestv3.ui.fragment.FlashFragment;
 import phamhungan.com.phonetestv3.ui.fragment.LCDScreenFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MicrophoneFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MultiTouchFragment;
@@ -39,7 +38,6 @@ public class DataUtil {
                 new Item(R.drawable.buttouch,activity.getResources().getString(R.string.touch_test)),
                 new Item(R.drawable.butmultitouch,activity.getResources().getString(R.string.multitouch_test)),
                 new Item(R.drawable.butcamera,activity.getResources().getString(R.string.camera_test)),
-                new Item(R.drawable.butflash,activity.getResources().getString(R.string.flash_test)),
                 new Item(R.drawable.butsen,activity.getResources().getString(R.string.sensor_test)),
                 new Item(R.drawable.butcompass,activity.getResources().getString(R.string.compass_test)),
                 new Item(R.drawable.butwifi,activity.getResources().getString(R.string.wifi_test)),
@@ -58,7 +56,6 @@ public class DataUtil {
                 new TouchFragment(),
                 new MultiTouchFragment(),
                 new CameraFragment(),
-                new FlashFragment(),
                 new SensorFragment(),
                 new CompassFragment(),
                 new WifiFragment(),

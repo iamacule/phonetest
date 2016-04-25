@@ -19,7 +19,6 @@ import phamhungan.com.phonetestv3.ui.fragment.BlueToothFragment;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CompassFragment;
-import phamhungan.com.phonetestv3.ui.fragment.FlashFragment;
 import phamhungan.com.phonetestv3.ui.fragment.LCDScreenFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MicrophoneFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MultiTouchFragment;
@@ -52,7 +51,6 @@ public class EventUtil {
                     fr instanceof VibrateFragment||
                     fr instanceof MicrophoneFragment||
                     fr instanceof CameraFragment||
-                    fr instanceof FlashFragment||
                     fr instanceof SensorFragment||
                     fr instanceof WifiFragment ||
                     fr instanceof BlueToothFragment ||
@@ -129,10 +127,8 @@ public class EventUtil {
                             fr.getActivity().getResources().getString(R.string.multitouch_test));
                     fr.getActivity().startActivity(intent);
                 } else if (fr instanceof CameraFragment) {
-                    ScreenUtil.changeFragment(new FlashFragment(), activity.getFragmentManager());
-                } else if (fr instanceof FlashFragment) {
                     ScreenUtil.changeFragment(new SensorFragment(), activity.getFragmentManager());
-                } else if (fr instanceof SensorFragment) {
+                }  else if (fr instanceof SensorFragment) {
                     ScreenUtil.changeFragment(new CompassFragment(), activity.getFragmentManager());
                 } else if (fr instanceof CompassFragment) {
                     ScreenUtil.changeFragment(new WifiFragment(), activity.getFragmentManager());

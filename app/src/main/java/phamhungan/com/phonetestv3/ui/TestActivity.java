@@ -14,7 +14,6 @@ import android.widget.Toast;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
-import phamhungan.com.phonetestv3.ui.fragment.FlashFragment;
 import phamhungan.com.phonetestv3.ui.fragment.LCDScreenFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MicrophoneFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MultiTouchFragment;
@@ -250,17 +249,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
                 } else {
                     isPermissionWriteStorageGranted = false;
-                }
-                break;
-            }
-            case FlashFragment.MY_REQUEST_FLASH_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermissionFlashGranted = true;
-
-                } else {
-                    isPermissionFlashGranted = false;
                 }
                 break;
             }
