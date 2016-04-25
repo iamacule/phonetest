@@ -19,6 +19,7 @@ import android.widget.TextView;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
+import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
@@ -78,7 +79,25 @@ public class CameraFragment extends BaseFragment implements View.OnClickListener
             Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent, 0);
         }else {
-            checkPermissionCamera();
+            DialogInfo.createDialog(getActivity(),"Let PhoneTest access your camera to perform the camera test?");
+            DialogInfo.btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogInfo.dialog.dismiss();
+                    if(!TestActivity.isPermissionCameraGranted){
+                        ActivityCompat.requestPermissions(getActivity(),
+                                new String[]{Manifest.permission.CAMERA},
+                                MY_REQUEST_CAMERA_PERMISSION_CODE);
+                    }
+                }
+            });
+            DialogInfo.btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogInfo.dialog.dismiss();
+                }
+            });
+            DialogInfo.show();
         }
     }
 

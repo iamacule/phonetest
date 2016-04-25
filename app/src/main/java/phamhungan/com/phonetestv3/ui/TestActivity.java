@@ -14,7 +14,9 @@ import android.widget.Toast;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
+import phamhungan.com.phonetestv3.ui.fragment.FlashFragment;
 import phamhungan.com.phonetestv3.ui.fragment.LCDScreenFragment;
+import phamhungan.com.phonetestv3.ui.fragment.MicrophoneFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MultiTouchFragment;
 import phamhungan.com.phonetestv3.ui.fragment.ResultFragment;
 import phamhungan.com.phonetestv3.ui.fragment.SensorFragment;
@@ -29,7 +31,7 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 /**
  * Created by MrAn PC on 22-Jan-16.
  */
-public class TestActivity extends AppCompatActivity implements View.OnClickListener{
+public class TestActivity extends AppCompatActivity implements View.OnClickListener {
     private String stringExtra;
     private Button butPass;
     private Button butSkip;
@@ -39,17 +41,21 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     public static TestActivity instance;
     private boolean isFullScreen = false;
     public static boolean isPermissionCameraGranted = false;
+    public static boolean isPermissionRecordGranted = false;
+    public static boolean isPermissionWriteStorageGranted = false;
+    public static boolean isPermissionFlashGranted = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
-        butPass = (Button)findViewById(R.id.butPass);
-        butSkip = (Button)findViewById(R.id.butSkip);
-        butFail = (Button)findViewById(R.id.butFail);
+        butPass = (Button) findViewById(R.id.butPass);
+        butSkip = (Button) findViewById(R.id.butSkip);
+        butFail = (Button) findViewById(R.id.butFail);
         butPass.setOnClickListener(this);
         butSkip.setOnClickListener(this);
         butFail.setOnClickListener(this);
-        lnBottom = (LinearLayout)findViewById(R.id.lnBottom);
+        lnBottom = (LinearLayout) findViewById(R.id.lnBottom);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             stringExtra = extras.getString(getResources().getString(R.string.which_test));
@@ -70,24 +76,23 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         int keyCode = event.getKeyCode();
         switch (keyCode) {
             case KeyEvent.KEYCODE_VOLUME_UP:
-                if(acceptSwitchFullScreenMode()){
+                if (acceptSwitchFullScreenMode()) {
                     if (action == KeyEvent.ACTION_DOWN) {
-                        if(!isFullScreen){
+                        if (!isFullScreen) {
                             setFullScreen(true);
-                        }else {
+                        } else {
                             setFullScreen(false);
                         }
                     }
-                }
-                else
+                } else
                     super.dispatchKeyEvent(event);
                 return true;
             case KeyEvent.KEYCODE_VOLUME_DOWN:
-                if(acceptSwitchLnBottom()){
+                if (acceptSwitchLnBottom()) {
                     if (action == KeyEvent.ACTION_DOWN) {
-                            showHideLnBottom();
+                        showHideLnBottom();
                     }
-                }else
+                } else
                     super.dispatchKeyEvent(event);
                 return true;
             default:
@@ -95,16 +100,15 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void showHideLnBottom(){
+    private void showHideLnBottom() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
-        if(fr instanceof ResultFragment){}
-        else {
-            if(DataUtil.whichTest){
-                if(isShowLnBottom){
+        if (fr instanceof ResultFragment) {
+        } else {
+            if (DataUtil.whichTest) {
+                if (isShowLnBottom) {
                     lnBottom.setVisibility(View.GONE);
                     lnBottom.setAnimation(AminationUtil.sliceOutToBottom(this));
-                }
-                else {
+                } else {
                     lnBottom.setVisibility(View.VISIBLE);
                     lnBottom.setAnimation(AminationUtil.sliceInToTop(this));
                 }
@@ -113,33 +117,32 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void setFullScreen(boolean fullScreen){
-        if(acceptSwitchFullScreenMode()){
-            if(fullScreen){
+    public void setFullScreen(boolean fullScreen) {
+        if (acceptSwitchFullScreenMode()) {
+            if (fullScreen) {
                 hideSystemUI();
                 isFullScreen = true;
-            }
-            else {
+            } else {
                 showSystemUI();
                 isFullScreen = false;
             }
         }
     }
 
-    private boolean acceptSwitchFullScreenMode(){
+    private boolean acceptSwitchFullScreenMode() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
-        if(fr instanceof LCDScreenFragment ||
+        if (fr instanceof LCDScreenFragment ||
                 fr instanceof TouchFragment ||
                 fr instanceof MultiTouchFragment)
             return true;
         else return false;
     }
 
-    private boolean acceptSwitchLnBottom(){
+    private boolean acceptSwitchLnBottom() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
-        if(fr instanceof LCDScreenFragment ||
+        if (fr instanceof LCDScreenFragment ||
                 fr instanceof TouchFragment ||
-                fr instanceof MultiTouchFragment||
+                fr instanceof MultiTouchFragment ||
                 fr instanceof SensorFragment)
             return true;
         else return false;
@@ -166,41 +169,40 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setLayout(String stringExtra) {
-        if(stringExtra.equals(getResources().getString(R.string.single_test))){
+        if (stringExtra.equals(getResources().getString(R.string.single_test))) {
             EventUtil.clearData(this);
             lnBottom.setVisibility(View.GONE);
             isShowLnBottom = false;
-            ScreenUtil.changeFragment(new SingleTest(),getFragmentManager());
-        }else if(stringExtra.equals(getResources().getString(R.string.lcd_test))){
-            ScreenUtil.changeFragment(new BrightnessFragment(),getFragmentManager());
-        }else if(stringExtra.equals(getResources().getString(R.string.brightness_test))){
-            ScreenUtil.changeFragment(new TouchFragment(),getFragmentManager());
-        }else if(stringExtra.equals(getResources().getString(R.string.touch_test))){
-            ScreenUtil.changeFragment(new MultiTouchFragment(),getFragmentManager());
-        }else if(stringExtra.equals(getResources().getString(R.string.multitouch_test))){
-            ScreenUtil.changeFragment(new CameraFragment(),getFragmentManager());
+            ScreenUtil.changeFragment(new SingleTest(), getFragmentManager());
+        } else if (stringExtra.equals(getResources().getString(R.string.lcd_test))) {
+            ScreenUtil.changeFragment(new BrightnessFragment(), getFragmentManager());
+        } else if (stringExtra.equals(getResources().getString(R.string.brightness_test))) {
+            ScreenUtil.changeFragment(new TouchFragment(), getFragmentManager());
+        } else if (stringExtra.equals(getResources().getString(R.string.touch_test))) {
+            ScreenUtil.changeFragment(new MultiTouchFragment(), getFragmentManager());
+        } else if (stringExtra.equals(getResources().getString(R.string.multitouch_test))) {
+            ScreenUtil.changeFragment(new CameraFragment(), getFragmentManager());
         } else {
             EventUtil.clearData(this);
             lnBottom.setVisibility(View.VISIBLE);
             isShowLnBottom = true;
-            ScreenUtil.changeFragment(new SoundFragment(),getFragmentManager());
+            ScreenUtil.changeFragment(new SoundFragment(), getFragmentManager());
         }
     }
 
     @Override
     public void onBackPressed() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
-        if(fr instanceof SingleTest){
+        if (fr instanceof SingleTest) {
             super.onBackPressed();
-        }
-        else {
+        } else {
             EventUtil.onBackPress(this);
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.butPass:
                 EventUtil.onPressButtonFulltest(this, DataUtil.pass);
                 break;
@@ -223,23 +225,59 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                     isPermissionCameraGranted = true;
 
                 } else {
-                    isPermissionCameraGranted=false;
+                    isPermissionCameraGranted = false;
                 }
                 break;
             }
 
+            case MicrophoneFragment.MY_REQUEST_RECORD_PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isPermissionRecordGranted = true;
+
+                } else {
+                    isPermissionRecordGranted = false;
+                }
+                break;
+            }
+
+            case MicrophoneFragment.MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isPermissionWriteStorageGranted = true;
+
+                } else {
+                    isPermissionWriteStorageGranted = false;
+                }
+                break;
+            }
+            case FlashFragment.MY_REQUEST_FLASH_PERMISSION_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    isPermissionFlashGranted = true;
+
+                } else {
+                    isPermissionFlashGranted = false;
+                }
+                break;
+            }
             default:
                 isPermissionCameraGranted = false;
+                isPermissionRecordGranted = false;
+                isPermissionWriteStorageGranted = false;
+                isPermissionFlashGranted = false;
                 break;
         }
     }
 
-    public void toastResultNavigation(){
-        if(DataUtil.whichTest){
-            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_full)),Toast.LENGTH_LONG).show();
-        }
-        else {
-            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_single)),Toast.LENGTH_LONG).show();
+    public void toastResultNavigation() {
+        if (DataUtil.whichTest) {
+            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_full)), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_single)), Toast.LENGTH_LONG).show();
         }
     }
 }
