@@ -1,19 +1,16 @@
 package phamhungan.com.phonetestv3.util;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
-import com.google.android.gms.common.server.response.FastJsonResponse;
 
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.ChooserActivity;
-import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.fragment.BatteryFragment;
 import phamhungan.com.phonetestv3.ui.fragment.BlueToothFragment;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
@@ -68,25 +65,19 @@ public class EventUtil {
             if(fr instanceof ResultFragment){
                 fr.getActivity().startActivity(intent);
             }else {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                DialogAsk.Build dialog = new DialogAsk.Build(activity);
+                dialog.setMessage(activity.getString(R.string.full_test_quit_ask))
+                        .setNegativeButton(activity.getString(R.string.no))
+                        .setPositiveButton(activity.getString(R.string.yes))
+                        .setNegativeButtonDefaultClick()
+                        .getPositiveButton().setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case DialogInterface.BUTTON_POSITIVE:
-                                fr.getActivity().startActivity(intent);
-                                clearData(activity);
-                                break;
-
-                            case DialogInterface.BUTTON_NEGATIVE:
-                                //No button clicked
-                                break;
-                        }
+                    public void onClick(View v) {
+                        fr.getActivity().startActivity(intent);
+                        clearData(activity);
                     }
-                };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-                builder.setMessage("Are you sure to quit full test ?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                });
+                dialog.show();
             }
         }
     }

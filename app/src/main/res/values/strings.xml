@@ -57,6 +57,10 @@
     <string name="toast_flash_error">Your phone does not have flash</string>
     <string name="notice">Notice</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="full_test_quit_ask">Are you sure to quit full test ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="toast_brightness2">Please wait the Brightness Bar up to 100%</string>
     <string name="message_sound">The music will start in : </string>
     <string name="message_vibrate">Your phone will vibrate in : </string>

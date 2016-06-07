@@ -1,8 +1,6 @@
 package phamhungan.com.phonetestv3.ui;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -23,6 +21,7 @@ import phamhungan.com.phonetestv3.Main;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.DialogAsk;
+import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.DialogUtil;
 import phamhungan.com.phonetestv3.util.EventUtil;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
@@ -136,8 +135,6 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     PermissionUtil.isPermissionWriteStorageGranted = true;
-                    checkExtra();
-                    setOnClick();
                 } else {
                     PermissionUtil.isPermissionWriteStorageGranted = false;
                     EventUtil.backPressExitApp(ChooserActivity.this);
@@ -161,13 +158,12 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     public void showDialogOK(String s) {
-        AlertDialog.Builder al1 = new AlertDialog.Builder(this);
-        al1.setTitle(getResources().getString(R.string.guide));
-        al1.setMessage(s);
-        al1.setPositiveButton(getResources().getString(R.string.start), new DialogInterface.OnClickListener() {
-
+        DialogInfo.Build dialog = new DialogInfo.Build(this);
+        dialog.setMessage(s)
+                .setButton(getString(R.string.start))
+                .getButton().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 DataUtil.whichTest = true;
                 Intent intent = new Intent(context, TestActivity.class);
                 intent.putExtra(getResources().getString(R.string.which_test), getResources().getString(R.string.full_test));
@@ -175,8 +171,7 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
-        AlertDialog alert = al1.create();
-        alert.show();
+        dialog.show();
     }
 
     @Override

@@ -11,25 +11,21 @@ import phamhungan.com.phonetestv3.R;
 /**
  * Created by Covisoft on 07/01/2016.
  */
-public class DialogAsk {
+public class DialogInfo {
     public static class Build {
         private AlertDialog.Builder builder;
         private AlertDialog dialog;
-        private TextView btnCancel;
-        private TextView btnOK;
+        private TextView button;
         private TextView tvMessage;
 
         public Build(Activity activity) {
             builder = new AlertDialog.Builder(activity);
             LayoutInflater inflater = activity.getLayoutInflater();
-            View view = inflater.inflate(R.layout.alert_dialog, null);
+            View view = inflater.inflate(R.layout.alert_dialog_one_button, null);
             builder.setView(view);
             dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
             tvMessage = (TextView) view.findViewById(R.id.tv_message);
-            btnOK = (TextView) view.findViewById(R.id.btn_ok);
-            btnCancel = (TextView) view.findViewById(R.id.btn_cancel);
+            button = (TextView) view.findViewById(R.id.button);
         }
 
         public Build setMessage(String message) {
@@ -37,18 +33,13 @@ public class DialogAsk {
             return this;
         }
 
-        public Build setPositiveButton(String text) {
-            this.btnOK.setText(text);
+        public Build setButton(String text){
+            this.button.setText(text);
             return this;
         }
 
-        public Build setNegativeButton(String text) {
-            this.btnCancel.setText(text);
-            return this;
-        }
-
-        public Build setNegativeButtonDefaultClick() {
-            this.btnCancel.setOnClickListener(new View.OnClickListener() {
+        public Build setDefaultButtonClick() {
+            this.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     dismiss();
@@ -57,22 +48,18 @@ public class DialogAsk {
             return this;
         }
 
-        public TextView getPositiveButton() {
-            return this.btnOK;
-        }
-
-        public TextView getNegativeButton() {
-            return this.btnCancel;
+        public TextView getButton() {
+            return this.button;
         }
 
         public void show() {
-            if (dialog != null & !dialog.isShowing()) {
+            if(dialog!=null&!dialog.isShowing()){
                 dialog.show();
             }
         }
 
         public void dismiss() {
-            if (dialog != null && dialog.isShowing()) {
+            if(dialog!=null&&dialog.isShowing()){
                 dialog.dismiss();
             }
         }
