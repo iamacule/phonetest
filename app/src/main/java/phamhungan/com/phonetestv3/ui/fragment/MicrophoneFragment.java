@@ -1,17 +1,12 @@
 package phamhungan.com.phonetestv3.ui.fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +18,7 @@ import java.io.File;
 import java.io.IOException;
 
 import phamhungan.com.phonetestv3.R;
-import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
-import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
@@ -33,41 +26,38 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
  * Created by MrAn PC on 23-Jan-16.
  */
 public class MicrophoneFragment extends BaseFragment {
-    private Button butRecord,butStop,butPlay;
+    private Button butRecord, butStop, butPlay;
     private TextView txtMessage;
     private ImageView imgMicro;
     private ImageView imgRefresh;
     private MediaPlayer mediaPlayer;
     private MediaRecorder myAudioRecorder;
     private AnimationDrawable animationDrawable;
-    private File cacheDirectory,file;
+    private File cacheDirectory, file;
     private Bitmap bp1;
     private Bitmap bp2;
     private Bitmap bp3;
     private Bitmap bp4;
     private Bitmap bp5;
-    public static final int MY_REQUEST_RECORD_PERMISSION_CODE = 2;
-    public static final int MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE = 3;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
-        if(DataUtil.whichTest){
+        if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-        }else {
+        } else {
             super.setHasOptionsMenu(true);
         }
-        txtMessage = (TextView)view.findViewById(R.id.txtMessage);
-        imgMicro = (ImageView)view.findViewById(R.id.imgMicro);
-        imgRefresh = (ImageView)view.findViewById(R.id.imgRefresh);
-        butRecord = (Button)view.findViewById(R.id.butRecord);
-        butStop = (Button)view.findViewById(R.id.butStop);
-        butPlay = (Button)view.findViewById(R.id.butPlay);
+        txtMessage = (TextView) view.findViewById(R.id.txtMessage);
+        imgMicro = (ImageView) view.findViewById(R.id.imgMicro);
+        imgRefresh = (ImageView) view.findViewById(R.id.imgRefresh);
+        butRecord = (Button) view.findViewById(R.id.butRecord);
+        butStop = (Button) view.findViewById(R.id.butStop);
+        butPlay = (Button) view.findViewById(R.id.butPlay);
 
         txtMessage.setText(getActivity().getResources().getString(R.string.press_record));
-        checkPermissionWriteStorage();
-        checkPermissionRecord();
         action();
         imgRefresh.setVisibility(View.INVISIBLE);
         imgRefresh.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.again), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 8));
@@ -82,51 +72,18 @@ public class MicrophoneFragment extends BaseFragment {
         return view;
     }
 
-    private void checkPermissionWriteStorage() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE);
-            }
-        }else {
-            TestActivity.isPermissionWriteStorageGranted = true;
-        }
-    }
-
-    private void checkPermissionRecord() {
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.RECORD_AUDIO)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-                    Manifest.permission.RECORD_AUDIO)) {
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.RECORD_AUDIO},
-                        MY_REQUEST_RECORD_PERMISSION_CODE);
-            }
-        }else {
-            TestActivity.isPermissionRecordGranted = true;
-        }
-    }
-
     private void createFile() {
         //Create File
-        if ( android.os.Environment.getExternalStorageState().equals( android.os.Environment.MEDIA_MOUNTED ))
-            cacheDirectory = new File( android.os.Environment.getExternalStorageDirectory(), "myFolder/" );
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDirectory = new File(android.os.Environment.getExternalStorageDirectory(), "myFolder/");
         else
             cacheDirectory = this.getActivity().getCacheDir();
 
-        if( !cacheDirectory.exists() )
+        if (!cacheDirectory.exists())
             cacheDirectory.mkdirs();
 
-        file = new File( cacheDirectory, "my_file.3gp" );;
+        file = new File(cacheDirectory, "my_file.3gp");
+        ;
     }
 
     private void action() {
@@ -138,52 +95,25 @@ public class MicrophoneFragment extends BaseFragment {
         butRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(TestActivity.isPermissionRecordGranted && TestActivity.isPermissionWriteStorageGranted){
-                    try {
-                        createFile();
-                        myAudioRecorder = new MediaRecorder();
-                        myAudioRecorder.reset();
-                        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-                        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-                        myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                        myAudioRecorder.setOutputFile(file.getPath());
-                        myAudioRecorder.prepare();
-                        myAudioRecorder.start();
-                    } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    startAdmination();
-                    txtMessage.setText(getActivity().getResources().getString(R.string.press_stop));
-                    imgRefresh.setVisibility(View.INVISIBLE);
-                    butRecord.setVisibility(View.INVISIBLE);
-                    butStop.setVisibility(View.VISIBLE);
-                }else {
-                    DialogInfo.createDialog(getActivity(),"Let PhoneTest access your microphone and external storage to perform the microphone test?");
-                    DialogInfo.btnOK.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            DialogInfo.dialog.dismiss();
-                            if(!TestActivity.isPermissionRecordGranted){
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.RECORD_AUDIO},
-                                        MY_REQUEST_RECORD_PERMISSION_CODE);
-                            }
-                            if(!TestActivity.isPermissionWriteStorageGranted){
-                                ActivityCompat.requestPermissions(getActivity(),
-                                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                        MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE);
-                            }
-                        }
-                    });
-                    DialogInfo.btnCancel.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            DialogInfo.dialog.dismiss();
-                        }
-                    });
-                    DialogInfo.show();
+                try {
+                    createFile();
+                    myAudioRecorder = new MediaRecorder();
+                    myAudioRecorder.reset();
+                    myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                    myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                    myAudioRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+                    myAudioRecorder.setOutputFile(file.getPath());
+                    myAudioRecorder.prepare();
+                    myAudioRecorder.start();
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
+                startAdmination();
+                txtMessage.setText(getActivity().getResources().getString(R.string.press_stop));
+                imgRefresh.setVisibility(View.INVISIBLE);
+                butRecord.setVisibility(View.INVISIBLE);
+                butStop.setVisibility(View.VISIBLE);
             }
         });
 
@@ -247,21 +177,20 @@ public class MicrophoneFragment extends BaseFragment {
         imgMicro.setImageDrawable(animationDrawable);
     }
 
-    private void stopAnimation(){
-        if(animationDrawable!=null){
-            if(animationDrawable.isRunning()){
+    private void stopAnimation() {
+        if (animationDrawable != null) {
+            if (animationDrawable.isRunning()) {
                 animationDrawable.stop();
             }
         }
     }
 
-    private void startAdmination(){
-        if(animationDrawable!=null){
-            if(!animationDrawable.isRunning()){
+    private void startAdmination() {
+        if (animationDrawable != null) {
+            if (!animationDrawable.isRunning()) {
                 animationDrawable.start();
             }
-        }
-        else {
+        } else {
             createAnimation();
             animationDrawable.start();
         }
@@ -269,11 +198,11 @@ public class MicrophoneFragment extends BaseFragment {
 
     private AnimationDrawable createAnimationDrawable() {
         bp1 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic1), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
-        bp2 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic2), ScreenUtil.getScreenWidth(getActivity().getWindowManager())/2);
-        bp3 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic3), ScreenUtil.getScreenWidth(getActivity().getWindowManager())/2);
-        bp4 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic4), ScreenUtil.getScreenWidth(getActivity().getWindowManager())/2);
-        bp5 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic5), ScreenUtil.getScreenWidth(getActivity().getWindowManager())/2);
-        return ScreenUtil.createAnimationDrawable(new Bitmap[]{bp1,bp2,bp3,bp4,bp5},getActivity());
+        bp2 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic2), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
+        bp3 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic3), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
+        bp4 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic4), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
+        bp5 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.mic5), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
+        return ScreenUtil.createAnimationDrawable(new Bitmap[]{bp1, bp2, bp3, bp4, bp5}, getActivity());
     }
 
     @Override

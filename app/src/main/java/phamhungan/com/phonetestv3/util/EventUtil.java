@@ -37,10 +37,7 @@ public class EventUtil {
     public static final String DATANAME = "MyResult";
     public static final String RESULTSTRING = "result";
     public static void backPressExitApp(Activity activity){
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        activity.startActivity(intent);
+        activity.moveTaskToBack(true);
     }
 
     public static void onBackPress(final Activity activity){

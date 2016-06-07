@@ -65,6 +65,9 @@
     <string name="url">https://play.google.com/store/apps/details?id=phamhungan.com.phonetestv3</string>
     <string name="url_market">market://details?id=phamhungan.com.phonetestv3</string>
     <string name="rating_content">If this application useful,please rate us !</string>
+    <string name="permission_camera_ask">PhoneTest need to access your Camera to perform this action !</string>
+    <string name="permission_record_ask">PhoneTest need to access your Micro Phone to perform this action !</string>
+    <string name="permission_write_ask">PhoneTest need to access your External Storage to perform this action !</string>
 
     <!-- Html-->
     <string name="notice_full_test">

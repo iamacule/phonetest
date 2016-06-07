@@ -1,7 +1,6 @@
 package phamhungan.com.phonetestv3.ui;
 
 import android.app.Fragment;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -15,7 +14,6 @@ import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
 import phamhungan.com.phonetestv3.ui.fragment.LCDScreenFragment;
-import phamhungan.com.phonetestv3.ui.fragment.MicrophoneFragment;
 import phamhungan.com.phonetestv3.ui.fragment.MultiTouchFragment;
 import phamhungan.com.phonetestv3.ui.fragment.ResultFragment;
 import phamhungan.com.phonetestv3.ui.fragment.SensorFragment;
@@ -39,10 +37,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isShowLnBottom = false;
     public static TestActivity instance;
     private boolean isFullScreen = false;
-    public static boolean isPermissionCameraGranted = false;
-    public static boolean isPermissionRecordGranted = false;
-    public static boolean isPermissionWriteStorageGranted = false;
-    public static boolean isPermissionFlashGranted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,53 +204,6 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.butFail:
                 EventUtil.onPressButtonFulltest(this, DataUtil.fail);
-                break;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case CameraFragment.MY_REQUEST_CAMERA_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermissionCameraGranted = true;
-
-                } else {
-                    isPermissionCameraGranted = false;
-                }
-                break;
-            }
-
-            case MicrophoneFragment.MY_REQUEST_RECORD_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermissionRecordGranted = true;
-
-                } else {
-                    isPermissionRecordGranted = false;
-                }
-                break;
-            }
-
-            case MicrophoneFragment.MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    isPermissionWriteStorageGranted = true;
-
-                } else {
-                    isPermissionWriteStorageGranted = false;
-                }
-                break;
-            }
-            default:
-                isPermissionCameraGranted = false;
-                isPermissionRecordGranted = false;
-                isPermissionWriteStorageGranted = false;
-                isPermissionFlashGranted = false;
                 break;
         }
     }
