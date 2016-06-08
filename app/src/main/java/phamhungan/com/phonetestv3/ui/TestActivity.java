@@ -2,7 +2,6 @@ package phamhungan.com.phonetestv3.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.fragment.BrightnessFragment;
 import phamhungan.com.phonetestv3.ui.fragment.CameraFragment;
@@ -28,12 +28,18 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 /**
  * Created by MrAn PC on 22-Jan-16.
  */
-public class TestActivity extends AppCompatActivity implements View.OnClickListener {
+public class TestActivity extends MrAnActivity implements View.OnClickListener {
+    @BindView(R.id.butPass)
+    Button butPass;
+    @BindView(R.id.butSkip)
+    Button butSkip;
+    @BindView(R.id.butFail)
+    Button butFail;
+    @BindView(R.id.lnBottom)
+    public
+    LinearLayout lnBottom;
+
     private String stringExtra;
-    private Button butPass;
-    private Button butSkip;
-    private Button butFail;
-    public LinearLayout lnBottom;
     private boolean isShowLnBottom = false;
     public static TestActivity instance;
     private boolean isFullScreen = false;
@@ -41,20 +47,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        butPass = (Button) findViewById(R.id.butPass);
-        butSkip = (Button) findViewById(R.id.butSkip);
-        butFail = (Button) findViewById(R.id.butFail);
-        butPass.setOnClickListener(this);
-        butSkip.setOnClickListener(this);
-        butFail.setOnClickListener(this);
-        lnBottom = (LinearLayout) findViewById(R.id.lnBottom);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             stringExtra = extras.getString(getResources().getString(R.string.which_test));
         }
         setLayout(stringExtra);
-        instance = this;
     }
 
     @Override
@@ -214,5 +211,28 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_single)), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void initializeChildView() {
+
+
+    }
+
+    @Override
+    public void initializeChildValue() {
+        instance = this;
+    }
+
+    @Override
+    public void initializeChildAction() {
+        butPass.setOnClickListener(this);
+        butSkip.setOnClickListener(this);
+        butFail.setOnClickListener(this);
+    }
+
+    @Override
+    protected int getView() {
+        return R.layout.activity_test;
     }
 }

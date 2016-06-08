@@ -5,21 +5,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
+
+import com.jaredrummler.android.device.DeviceName;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 
+import butterknife.BindView;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
@@ -29,47 +27,20 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 /**
  * Created by MrAn PC on 21-Jan-16.
  */
-public class PhoneInfoActivity extends AppCompatActivity {
+public class PhoneInfoActivity extends MrAnActivity {
+    @BindView(R.id.lnMain)
+    LinearLayout lnMain;
+
     private String cpuInfo;
-    private ScrollView main;
-    private LinearLayout lnMain;
     private MyTitleTextView txtTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phone_info);
-        main = (ScrollView)findViewById(R.id.main);
-        lnMain = (LinearLayout)findViewById(R.id.lnMain);
-
-        showDeviceInfo();
-        showOSInfo();
-        showSystemDisplayInfo();
-        showMemoryInfo();
-        showTeleponyInfo();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_actions_bar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.itemShare:
-                ScreenUtil.showSharedialog(this);
-                break;
-            case R.id.itemAbout:
-                ScreenUtil.goAbout(this);
-                break;
-        }
-        return true;
     }
 
     private void showTeleponyInfo() {
-        txtTitle = new MyTitleTextView(this,"TELEPHONY");
+        txtTitle = new MyTitleTextView(this, "TELEPHONY");
         MyTableLayout myTableLayout = new MyTableLayout(this);
         MyTableRow row1;
         MyTableRow row2;
@@ -78,18 +49,16 @@ public class PhoneInfoActivity extends AppCompatActivity {
         MyTableRow row5;
         MyTableRow row6;
         MyTableRow row7;
-        try
-        {
-            TelephonyManager tm=(TelephonyManager)getSystemService(this.TELEPHONY_SERVICE);
-            String IMEINumber=tm.getDeviceId();
-            String subscriberID=tm.getDeviceId();
-            String SIMSerialNumber=tm.getSimSerialNumber();
-            String networkCountryISO=tm.getNetworkCountryIso();
-            String SIMCountryISO=tm.getSimCountryIso();
-            int phoneType=tm.getPhoneType();
+        try {
+            TelephonyManager tm = (TelephonyManager) getSystemService(this.TELEPHONY_SERVICE);
+            String IMEINumber = tm.getDeviceId();
+            String subscriberID = tm.getDeviceId();
+            String SIMSerialNumber = tm.getSimSerialNumber();
+            String networkCountryISO = tm.getNetworkCountryIso();
+            String SIMCountryISO = tm.getSimCountryIso();
+            int phoneType = tm.getPhoneType();
             String phonetype = null;
-            switch (phoneType)
-            {
+            switch (phoneType) {
                 case (TelephonyManager.PHONE_TYPE_CDMA):
                     phonetype = "CDMA";
                     break;
@@ -101,13 +70,13 @@ public class PhoneInfoActivity extends AppCompatActivity {
                     break;
             }
             String locale = getResources().getConfiguration().locale.getDisplayCountry();
-            row1 = new MyTableRow(this,"IMEI NUMBER",IMEINumber,"");
-            row2 = new MyTableRow(this,"SUBSCRIBER ID",subscriberID,"");
-            row3 = new MyTableRow(this,"SIM SERIAL NUMBER",SIMSerialNumber,"");
-            row4 = new MyTableRow(this,"NETWORK COUNTRY ISO",networkCountryISO,"");
-            row5 = new MyTableRow(this,"SIM COUNTRY ISO",SIMCountryISO,"");
-            row6 = new MyTableRow(this,"PHONE TYPE",phonetype,"");
-            row7 = new MyTableRow(this,"COUNTRY",locale,"");
+            row1 = new MyTableRow(this, "IMEI NUMBER", IMEINumber, "");
+            row2 = new MyTableRow(this, "SUBSCRIBER ID", subscriberID, "");
+            row3 = new MyTableRow(this, "SIM SERIAL NUMBER", SIMSerialNumber, "");
+            row4 = new MyTableRow(this, "NETWORK COUNTRY ISO", networkCountryISO, "");
+            row5 = new MyTableRow(this, "SIM COUNTRY ISO", SIMCountryISO, "");
+            row6 = new MyTableRow(this, "PHONE TYPE", phonetype, "");
+            row7 = new MyTableRow(this, "COUNTRY", locale, "");
 
             myTableLayout.addView(row1);
             myTableLayout.addView(row2);
@@ -116,10 +85,8 @@ public class PhoneInfoActivity extends AppCompatActivity {
             myTableLayout.addView(row5);
             myTableLayout.addView(row6);
             myTableLayout.addView(row7);
-        }
-        catch(Exception e)
-        {
-            row1 = new MyTableRow(this,"","NOT INCLUDE SIM","");
+        } catch (Exception e) {
+            row1 = new MyTableRow(this, "", "NOT INCLUDE SIM", "");
             myTableLayout.addView(row1);
         }
 
@@ -128,25 +95,29 @@ public class PhoneInfoActivity extends AppCompatActivity {
     }
 
     private void showMemoryInfo() {
-        txtTitle = new MyTitleTextView(this,"INTERNAL MEMORY");
+        txtTitle = new MyTitleTextView(this, "INTERNAL MEMORY");
         MyTableLayout myTableLayout = new MyTableLayout(this);
-        MyTableRow row1 = new MyTableRow(this,"AVAILABLE MEMORY SIZE",getAvailableInternalMemorySize(),"");
-        MyTableRow row2 = new MyTableRow(this,"TOTAL MEMORY SIZE",getTotalInternalMemorySize(),"");
-        myTableLayout.addView(row1);
-        myTableLayout.addView(row2);
+        long[] longs = getInternalMemorySize();
+        MyTableRow row = new MyTableRow(this, "TOTAL MEMORY SIZE", formatSize(longs[0]), "");
+        myTableLayout.addView(row);
+        row = new MyTableRow(this, "AVAILABLE MEMORY SIZE", formatSize(longs[1]), "");
+        myTableLayout.addView(row);
 
         lnMain.addView(txtTitle);
         lnMain.addView(myTableLayout);
+    }
 
-        txtTitle = new MyTitleTextView(this,"EXTERNAL MEMORY");
-        MyTableLayout myTableLayout2 = new MyTableLayout(this);
-        MyTableRow row3 = new MyTableRow(this,"AVAILABLE MEMORY SIZE",getAvailableExternalMemorySize(),"");
-        MyTableRow row4 = new MyTableRow(this,"TOTAL MEMORY SIZE",getTotalExternalMemorySize(),"");
-        myTableLayout2.addView(row3);
-        myTableLayout2.addView(row4);
-
-        lnMain.addView(txtTitle);
-        lnMain.addView(myTableLayout2);
+    private long[] getInternalMemorySize() {
+        long[] longs = new long[3];
+        StatFs statFs = new StatFs(Environment.getExternalStorageDirectory().getAbsolutePath());
+        long blockSize = statFs.getBlockSize();
+        long totalSize = statFs.getBlockCount() * blockSize;
+        long availableSize = statFs.getAvailableBlocks() * blockSize;
+        long freeSize = statFs.getFreeBlocks() * blockSize;
+        longs[0] = totalSize;
+        longs[1] = availableSize;
+        longs[2] = freeSize;
+        return longs;
     }
 
     private void showOSInfo() {
@@ -154,14 +125,15 @@ public class PhoneInfoActivity extends AppCompatActivity {
         String kernel = System.getProperty("os.version");
         String firmware = Build.VERSION.INCREMENTAL;
         int sdk = Build.VERSION.SDK_INT;
-        String version = Build.VERSION.RELEASE;;
+        String version = Build.VERSION.RELEASE;
+        ;
 
-        txtTitle = new MyTitleTextView(this,"OS");
+        txtTitle = new MyTitleTextView(this, "OS");
         MyTableLayout myTableLayout = new MyTableLayout(this);
-        MyTableRow rowKernel = new MyTableRow(this,"KERNEL",kernel,"");
-        MyTableRow rowFirmware = new MyTableRow(this,"FIRMWARE",firmware,"");
-        MyTableRow rowSdk = new MyTableRow(this,"SDK",sdk+"","");
-        MyTableRow rowVersion = new MyTableRow(this,"VERSION",version,"");
+        MyTableRow rowKernel = new MyTableRow(this, "KERNEL", kernel, "");
+        MyTableRow rowFirmware = new MyTableRow(this, "FIRMWARE", firmware, "");
+        MyTableRow rowSdk = new MyTableRow(this, "SDK", sdk + "", "");
+        MyTableRow rowVersion = new MyTableRow(this, "VERSION", version, "");
         myTableLayout.addView(rowKernel);
         myTableLayout.addView(rowFirmware);
         myTableLayout.addView(rowSdk);
@@ -172,26 +144,26 @@ public class PhoneInfoActivity extends AppCompatActivity {
     }
 
     private void showSystemDisplayInfo() {
-        int width = (int)ScreenUtil.getScreenWidth(getWindowManager());
-        int height = (int)ScreenUtil.getScreenHeight(getWindowManager());
-        String dimensions = width + " x "+height+" pixels";
+        int width = (int) ScreenUtil.getScreenWidth(getWindowManager());
+        int height = (int) ScreenUtil.getScreenHeight(getWindowManager());
+        String dimensions = width + " x " + height + " pixels";
 
         //Show screen density
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        int densityDpi = (int)(displayMetrics.density * 160f);
-        String density = ""+densityDpi+" dpi";
+        int densityDpi = (int) (displayMetrics.density * 160f);
+        String density = "" + densityDpi + " dpi";
 
         double x = Math.pow(width / displayMetrics.xdpi, 2);
         double y = Math.pow(height / displayMetrics.ydpi, 2);
         double screenInches = Math.sqrt(x + y);
         DecimalFormat df = new DecimalFormat("####0.00");
-        String screenSize = df.format(screenInches)+" \"";
+        String screenSize = df.format(screenInches) + " \"";
 
-        txtTitle = new MyTitleTextView(this,"SYSTEM DISPLAY");
+        txtTitle = new MyTitleTextView(this, "SYSTEM DISPLAY");
         MyTableLayout myTableLayout = new MyTableLayout(this);
-        MyTableRow row1 = new MyTableRow(this,"DIMENSIONS",dimensions,"");
-        MyTableRow row2 = new MyTableRow(this,"DENSITY",density,"");
-        MyTableRow row3 = new MyTableRow(this,"SCREEN SIZE",screenSize,"");
+        MyTableRow row1 = new MyTableRow(this, "DIMENSIONS", dimensions, "");
+        MyTableRow row2 = new MyTableRow(this, "DENSITY", density, "");
+        MyTableRow row3 = new MyTableRow(this, "SCREEN SIZE", screenSize, "");
         myTableLayout.addView(row1);
         myTableLayout.addView(row2);
         myTableLayout.addView(row3);
@@ -201,23 +173,23 @@ public class PhoneInfoActivity extends AppCompatActivity {
     }
 
     private void showDeviceInfo() {
-        txtTitle = new MyTitleTextView(this,getResources().getString(R.string.device));
-        MyTableLayout myTableLayout = new MyTableLayout(this);
-        MyTableRow manufacturer = new MyTableRow(this,"MANUFACTURER",Build.MANUFACTURER,"");
-        MyTableRow model = new MyTableRow(this,"MODEL",Build.MODEL,"");
-        MyTableRow brand = new MyTableRow(this,"BRAND",Build.BRAND,"");
-        MyTableRow device = new MyTableRow(this,"DEVICE",Build.DEVICE,"");
-        MyTableRow product = new MyTableRow(this,"PRODUCT",Build.PRODUCT,"");
+        DeviceName.DeviceInfo deviceInfo = DeviceName.getDeviceInfo(this);
+        txtTitle = new MyTitleTextView(PhoneInfoActivity.this, getResources().getString(R.string.device));
+        MyTableLayout myTableLayout = new MyTableLayout(PhoneInfoActivity.this);
+        MyTableRow manufacturer = new MyTableRow(PhoneInfoActivity.this, "MANUFACTURER", deviceInfo.manufacturer, "");
+        MyTableRow name = new MyTableRow(PhoneInfoActivity.this, "NAME", deviceInfo.marketName, "");
+        MyTableRow model = new MyTableRow(PhoneInfoActivity.this, "MODEL", deviceInfo.model, "");
 
         //Read Professor
-        try{
+        try {
             Process proc = Runtime.getRuntime().exec("cat /proc/cpuinfo");
             InputStream is = proc.getInputStream();
             cpuInfo = getStringFromInputStream(is);
-        }catch(Exception e){}
+        } catch (Exception e) {
+        }
 
-        MyTableRow cpu = new MyTableRow(this,"CPU",cpuInfo,"");
-        MyTableRow cpuAbi = new MyTableRow(this,"CPU ABI",Build.CPU_ABI,"");
+        MyTableRow cpu = new MyTableRow(PhoneInfoActivity.this, "CPU", cpuInfo, "");
+        MyTableRow cpuAbi = new MyTableRow(PhoneInfoActivity.this, "CPU ABI", Build.CPU_ABI, "");
 
         //Read RAM
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
@@ -225,13 +197,11 @@ public class PhoneInfoActivity extends AppCompatActivity {
         activityManager.getMemoryInfo(mi);
         long totalRam = mi.totalMem / 1048576;
 
-        MyTableRow ram = new MyTableRow(this,"RAM",totalRam+"","Mb");
+        MyTableRow ram = new MyTableRow(PhoneInfoActivity.this, "RAM", totalRam + "", "Mb");
 
         myTableLayout.addView(manufacturer);
+        myTableLayout.addView(name);
         myTableLayout.addView(model);
-        myTableLayout.addView(brand);
-        myTableLayout.addView(device);
-        myTableLayout.addView(product);
         myTableLayout.addView(cpu);
         myTableLayout.addView(cpuAbi);
         myTableLayout.addView(ram);
@@ -245,67 +215,20 @@ public class PhoneInfoActivity extends AppCompatActivity {
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String line = null;
         try {
-            while((line = br.readLine()) != null) {
-                sb.append("   "+line);
+            while ((line = br.readLine()) != null) {
+                sb.append("   " + line);
                 sb.append("\n");
             }
-        }
-        catch (IOException e) {}
-        finally {
-            if(br != null) {
+        } catch (IOException e) {
+        } finally {
+            if (br != null) {
                 try {
                     br.close();
+                } catch (IOException e) {
                 }
-                catch (IOException e) {}
             }
         }
         return sb.toString();
-    }
-
-    //Get Internal & External info
-    public static boolean externalMemoryAvailable() {
-        return android.os.Environment.getExternalStorageState().equals(
-                android.os.Environment.MEDIA_MOUNTED);
-    }
-
-    public String getAvailableInternalMemorySize() {
-        File path = Environment.getDataDirectory();
-        StatFs stat = new StatFs(path.getPath());
-        long blockSize = stat.getBlockSize();
-        long availableBlocks = stat.getAvailableBlocks();
-        return formatSize(availableBlocks * blockSize);
-    }
-
-    public String getTotalInternalMemorySize() {
-        File path = Environment.getDataDirectory();
-        StatFs stat = new StatFs(path.getPath());
-        long blockSize = stat.getBlockSize();
-        long totalBlocks = stat.getBlockCount();
-        return formatSize(totalBlocks * blockSize);
-    }
-
-    public String getAvailableExternalMemorySize() {
-        if (externalMemoryAvailable()) {
-            File path = Environment.getExternalStorageDirectory();
-            StatFs stat = new StatFs(path.getPath());
-            long blockSize = stat.getBlockSize();
-            long availableBlocks = stat.getAvailableBlocks();
-            return formatSize(availableBlocks * blockSize);
-        } else {
-            return "None";
-        }
-    }
-
-    public static String getTotalExternalMemorySize() {
-        if (externalMemoryAvailable()) {
-            File path = Environment.getExternalStorageDirectory();
-            StatFs stat = new StatFs(path.getPath());
-            long blockSize = stat.getBlockSize();
-            long totalBlocks = stat.getBlockCount();
-            return formatSize(blockSize * totalBlocks);
-        } else {
-            return "None";
-        }
     }
 
     public static String formatSize(long size) {
@@ -330,6 +253,31 @@ public class PhoneInfoActivity extends AppCompatActivity {
 
         if (suffix != null) resultBuffer.append(suffix);
         return resultBuffer.toString();
+    }
+
+
+    @Override
+    protected int getView() {
+        return R.layout.activity_phone_info;
+    }
+
+    @Override
+    public void initializeChildView() {
+        showDeviceInfo();
+        showOSInfo();
+        showSystemDisplayInfo();
+        showMemoryInfo();
+        showTeleponyInfo();
+    }
+
+    @Override
+    public void initializeChildValue() {
+
+    }
+
+    @Override
+    public void initializeChildAction() {
+
     }
 }
 

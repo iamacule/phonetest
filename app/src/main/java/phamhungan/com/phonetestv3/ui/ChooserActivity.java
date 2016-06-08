@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
@@ -15,8 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
+import butterknife.BindView;
 import phamhungan.com.phonetestv3.Main;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.util.DataUtil;
@@ -28,30 +27,30 @@ import phamhungan.com.phonetestv3.util.PermissionUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
-import com.facebook.FacebookSdk;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 /**
  * Created by MrAn PC on 20-Jan-16.
  */
-public class ChooserActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button butInfo;
-    private Button butSingle;
-    private Button butFull;
+public class ChooserActivity extends MrAnActivity implements View.OnClickListener {
+    @BindView(R.id.butInfo)
+    Button butInfo;
+    @BindView(R.id.butSingle)
+    Button butSingle;
+    @BindView(R.id.butFull)
+    Button butFull;
+    @BindView(R.id.imgLogo)
+    ImageView imgLogo;
+
     private ChooserActivity context;
     private String stringExtra;
-    private ImageView imgLogo;
-    private RelativeLayout main;
     private final String TAG = "PhoneTest";
     private PermissionUtil permissionUtil;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_chooser);
-        initLayout();
     }
 
     @Override
@@ -81,18 +80,6 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
             intent.putExtra(getResources().getString(R.string.which_test), stringExtra);
             startActivity(intent);
         }
-    }
-
-    private void initLayout() {
-        context = this;
-        permissionUtil = new PermissionUtil(this);
-        butInfo = (Button) findViewById(R.id.butInfo);
-        butSingle = (Button) findViewById(R.id.butSingle);
-        butFull = (Button) findViewById(R.id.butFull);
-        imgLogo = (ImageView) findViewById(R.id.imgLogo);
-        main = (RelativeLayout) findViewById(R.id.main);
-        imgLogo.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.icon), ScreenUtil.getScreenWidth(getWindowManager()) / 4));
-        loadAdsMob();
     }
 
     private void checkPhoneTestPermission() {
@@ -175,26 +162,6 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.menu_actions_bar, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemShare:
-                ScreenUtil.showSharedialog(this);
-                break;
-            case R.id.itemAbout:
-                ScreenUtil.goAbout(this);
-                break;
-        }
-        return true;
-    }
-
-    @Override
     public void onBackPressed() {
         if (!checkRating())
             DialogUtil.showRatingDialog(this);
@@ -247,5 +214,26 @@ public class ChooserActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void initializeChildView() {
+        imgLogo.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.icon), ScreenUtil.getScreenWidth(getWindowManager()) / 4));
+    }
+
+    @Override
+    public void initializeChildValue() {
+        context = this;
+        permissionUtil = new PermissionUtil(this);
+    }
+
+    @Override
+    public void initializeChildAction() {
+        loadAdsMob();
+    }
+
+    @Override
+    protected int getView() {
+        return R.layout.activity_chooser;
     }
 }
