@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import phamhungan.com.phonetestv3.R;
-import phamhungan.com.phonetestv3.ui.fragment.AboutActivity;
+import phamhungan.com.phonetestv3.ui.activity.AboutActivity;
 
 /**
  * Created by MrAn PC on 19-Jan-16.

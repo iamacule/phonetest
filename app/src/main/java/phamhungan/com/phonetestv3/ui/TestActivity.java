@@ -1,6 +1,7 @@
 package phamhungan.com.phonetestv3.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.KeyEvent;
@@ -184,7 +185,8 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     public void onBackPressed() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
         if (fr instanceof SingleTest) {
-            super.onBackPressed();
+            Intent i = new Intent(this,ChooserActivity.class);
+            startActivity(i);
         } else {
             EventUtil.onBackPress(this);
         }

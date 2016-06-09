@@ -1,4 +1,4 @@
-package phamhungan.com.phonetestv3.ui.fragment;
+package phamhungan.com.phonetestv3.ui.activity;
 
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
