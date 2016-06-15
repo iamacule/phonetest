@@ -163,10 +163,14 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
-        if (!checkRating())
-            DialogUtil.showRatingDialog(this);
-        else
-            EventUtil.backPressExitApp(this);
+        try {
+            if (!checkRating())
+                DialogUtil.showRatingDialog(this);
+            else
+                EventUtil.backPressExitApp(this);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private boolean checkRating() {
