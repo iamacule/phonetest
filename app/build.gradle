@@ -9,8 +9,8 @@ android {
         applicationId "phamhungan.com.phonetestv3"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 12
-        versionName "1.83"
+        versionCode 13
+        versionName "1.84"
     }
     buildTypes {
         release {
