@@ -47,7 +47,7 @@
             android:screenOrientation="sensorPortrait">
         </activity >
         <activity
-            android:name=".ui.fragment.AboutActivity"
+            android:name=".ui.activity.AboutActivity"
             android:label="@string/app_name"
             android:screenOrientation="sensorPortrait">
         </activity >
