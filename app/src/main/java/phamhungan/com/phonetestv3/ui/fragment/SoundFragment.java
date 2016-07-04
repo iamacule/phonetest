@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
@@ -47,6 +48,7 @@ public class SoundFragment extends BaseFragment {
         bitmap2 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.speaker2), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
         imgSpeaker.setImageBitmap(bitmap1);
         txtMessage = (TextView)view.findViewById(R.id.txtMessage);
+        ((TestActivity)getActivity()).setMaxMusicVolume();
         action();
         return view;
     }

@@ -1,9 +1,12 @@
 package phamhungan.com.phonetestv3.ui;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -37,8 +40,8 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     @BindView(R.id.butFail)
     Button butFail;
     @BindView(R.id.lnBottom)
-    public
-    LinearLayout lnBottom;
+    public LinearLayout lnBottom;
+    private AudioManager audioManager;
 
     private String stringExtra;
     private boolean isShowLnBottom = false;
@@ -185,7 +188,7 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     public void onBackPressed() {
         Fragment fr = getFragmentManager().findFragmentById(R.id.mainFragment);
         if (fr instanceof SingleTest) {
-            Intent i = new Intent(this,ChooserActivity.class);
+            Intent i = new Intent(this, ChooserActivity.class);
             startActivity(i);
         } else {
             EventUtil.onBackPress(this);
@@ -224,6 +227,11 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     @Override
     public void initializeChildValue() {
         instance = this;
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+    }
+
+    public void setMaxMusicVolume() {
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
     }
 
     @Override

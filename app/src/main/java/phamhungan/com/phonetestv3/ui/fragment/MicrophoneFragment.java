@@ -63,6 +63,7 @@ public class MicrophoneFragment extends BaseFragment {
         butPlay = (Button) view.findViewById(R.id.butPlay);
 
         txtMessage.setText(getActivity().getResources().getString(R.string.press_record));
+        ((TestActivity)getActivity()).setMaxMusicVolume();
         action();
         imgRefresh.setVisibility(View.INVISIBLE);
         imgRefresh.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.again), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 8));
