@@ -71,7 +71,9 @@
     <string name="rating_content">If this application useful,please rate us !</string>
     <string name="permission_camera_ask">PhoneTest need to access your Camera to perform this action !</string>
     <string name="permission_record_ask">PhoneTest need to access your Micro Phone to perform this action !</string>
-    <string name="permission_write_ask">PhoneTest need to access your External Storage to perform this action !</string>
+    <string name="permission_write_ask">PhoneTest need to  access your External Storage to perform this action !</string>
+    <string name="permission_phone_ask">PhoneTest need to  access your Phone State to perform this action !</string>
+    <string name="permission_decline">Permission decline!</string>
 
     <!-- Html-->
     <string name="notice_full_test">

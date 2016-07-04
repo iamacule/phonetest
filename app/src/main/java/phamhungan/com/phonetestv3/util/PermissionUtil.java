@@ -13,9 +13,11 @@ public class PermissionUtil {
     public static final int MY_REQUEST_CAMERA_PERMISSION_CODE = 1;
     public static final int MY_REQUEST_RECORD_PERMISSION_CODE = 2;
     public static final int MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE = 3;
+    public static final int MY_REQUEST_READ_PHONE_STATE_PERMISSION_CODE = 4;
     public static boolean isPermissionCameraGranted = false;
     public static boolean isPermissionRecordGranted = false;
     public static boolean isPermissionWriteStorageGranted = false;
+    public static boolean isPermissionReadPhoneStateGranted = false;
     private Activity activity;
 
     public PermissionUtil(Activity activity) {

@@ -1,11 +1,14 @@
 package phamhungan.com.phonetestv3.ui.fragment;
 
+import android.Manifest;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,9 @@ import java.io.File;
 import java.io.IOException;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
+import phamhungan.com.phonetestv3.util.PermissionUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
@@ -74,16 +79,15 @@ public class MicrophoneFragment extends BaseFragment {
 
     private void createFile() {
         //Create File
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
-            cacheDirectory = new File(android.os.Environment.getExternalStorageDirectory(), "myFolder/");
+        if (Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDirectory = new File(Environment.getExternalStorageDirectory().toString(), "PhoneTest/Record/");
         else
             cacheDirectory = this.getActivity().getCacheDir();
 
         if (!cacheDirectory.exists())
             cacheDirectory.mkdirs();
 
-        file = new File(cacheDirectory, "my_file.3gp");
-        ;
+        file = new File(cacheDirectory, "myRecordTest.3gp");
     }
 
     private void action() {
@@ -95,6 +99,20 @@ public class MicrophoneFragment extends BaseFragment {
         butRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!PermissionUtil.isPermissionRecordGranted) {
+                    ((TestActivity) getActivity()).showDialogAskPermission(getString(R.string.permission_record_ask),
+                            Manifest.permission.RECORD_AUDIO,
+                            PermissionUtil.MY_REQUEST_RECORD_PERMISSION_CODE);
+                } else if (!PermissionUtil.isPermissionWriteStorageGranted) {
+                    ((TestActivity) getActivity()).showDialogAskPermission(getString(R.string.permission_write_ask),
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            PermissionUtil.MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE);
+                } else {
+                    record();
+                }
+            }
+
+            private void record() {
                 try {
                     createFile();
                     myAudioRecorder = new MediaRecorder();

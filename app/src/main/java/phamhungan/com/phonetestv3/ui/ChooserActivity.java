@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import butterknife.BindView;
 import phamhungan.com.phonetestv3.Main;
@@ -46,7 +47,6 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     private ChooserActivity context;
     private String stringExtra;
     private final String TAG = "PhoneTest";
-    private PermissionUtil permissionUtil;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,20 +56,9 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     @Override
     protected void onResume() {
         super.onResume();
+        checkExtra();
+        setOnClick();
         checkPhoneTestPermission();
-        if (!PermissionUtil.isPermissionCameraGranted) {
-            showDialogAskPermission(getString(R.string.permission_camera_ask),
-                    Manifest.permission.CAMERA, PermissionUtil.MY_REQUEST_CAMERA_PERMISSION_CODE);
-        } else if (!PermissionUtil.isPermissionRecordGranted) {
-            showDialogAskPermission(getString(R.string.permission_record_ask),
-                    Manifest.permission.RECORD_AUDIO, PermissionUtil.MY_REQUEST_RECORD_PERMISSION_CODE);
-        } else if (!PermissionUtil.isPermissionWriteStorageGranted) {
-            showDialogAskPermission(getString(R.string.permission_write_ask),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE, PermissionUtil.MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE);
-        } else {
-            checkExtra();
-            setOnClick();
-        }
     }
 
     private void checkExtra() {
@@ -86,49 +75,11 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         PermissionUtil.isPermissionCameraGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED ? true : false;
         PermissionUtil.isPermissionRecordGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED ? true : false;
         PermissionUtil.isPermissionWriteStorageGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ? true : false;
+        PermissionUtil.isPermissionReadPhoneStateGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED ? true : false;
         Log.d(TAG, "CAMERA : " + PermissionUtil.isPermissionCameraGranted);
         Log.d(TAG, "RECORD_AUDIO : " + PermissionUtil.isPermissionRecordGranted);
         Log.d(TAG, "WRITE_EXTERNAL_STORAGE : " + PermissionUtil.isPermissionWriteStorageGranted);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtil.MY_REQUEST_CAMERA_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PermissionUtil.isPermissionCameraGranted = true;
-                } else {
-                    PermissionUtil.isPermissionCameraGranted = false;
-                    EventUtil.backPressExitApp(ChooserActivity.this);
-                }
-                return;
-            }
-            case PermissionUtil.MY_REQUEST_RECORD_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PermissionUtil.isPermissionRecordGranted = true;
-                } else {
-                    PermissionUtil.isPermissionRecordGranted = false;
-                    EventUtil.backPressExitApp(ChooserActivity.this);
-                }
-                return;
-            }
-            case PermissionUtil.MY_REQUEST_WRITE_STORAGE_PERMISSION_CODE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    PermissionUtil.isPermissionWriteStorageGranted = true;
-                } else {
-                    PermissionUtil.isPermissionWriteStorageGranted = false;
-                    EventUtil.backPressExitApp(ChooserActivity.this);
-                }
-                return;
-            }
-        }
+        Log.d(TAG, "READ_PHONE_STATE : " + PermissionUtil.isPermissionReadPhoneStateGranted);
     }
 
     private void loadAdsMob() {
@@ -168,7 +119,7 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
                 DialogUtil.showRatingDialog(this);
             else
                 EventUtil.backPressExitApp(this);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -182,9 +133,14 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         Intent intent;
         switch (v.getId()) {
             case R.id.butInfo:
-                intent = new Intent(this, PhoneInfoActivity.class);
-                startActivity(intent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                if (PermissionUtil.isPermissionReadPhoneStateGranted) {
+                    intent = new Intent(ChooserActivity.this, PhoneInfoActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                } else {
+                    showDialogAskPermission(getString(R.string.permission_phone_ask), Manifest.permission.READ_PHONE_STATE,
+                            PermissionUtil.MY_REQUEST_READ_PHONE_STATE_PERMISSION_CODE);
+                }
                 break;
             case R.id.butSingle:
                 DataUtil.whichTest = false;
@@ -199,27 +155,6 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         }
     }
 
-
-    private void showDialogAskPermission(final String message, final String permission, final int idCallBack) {
-        final DialogAsk.Build dialog = new DialogAsk.Build(this);
-        dialog.setMessage(message);
-        dialog.getPositiveButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                permissionUtil.checkPermission(permission, idCallBack);
-            }
-        });
-        dialog.getNegativeButton().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                EventUtil.backPressExitApp(ChooserActivity.this);
-            }
-        });
-        dialog.show();
-    }
-
     @Override
     public void initializeChildView() {
         imgLogo.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.icon), ScreenUtil.getScreenWidth(getWindowManager()) / 4));
@@ -228,7 +163,6 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     @Override
     public void initializeChildValue() {
         context = this;
-        permissionUtil = new PermissionUtil(this);
     }
 
     @Override

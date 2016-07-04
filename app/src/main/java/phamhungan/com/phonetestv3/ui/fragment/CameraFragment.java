@@ -1,5 +1,6 @@
 package phamhungan.com.phonetestv3.ui.fragment;
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
+import phamhungan.com.phonetestv3.util.PermissionUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
@@ -71,7 +74,13 @@ public class CameraFragment extends BaseFragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imgSpeaker:
-                openCamera();
+                if (!PermissionUtil.isPermissionCameraGranted) {
+                    ((TestActivity) getActivity()).showDialogAskPermission(getString(R.string.permission_camera_ask),
+                            Manifest.permission.CAMERA,
+                            PermissionUtil.MY_REQUEST_CAMERA_PERMISSION_CODE);
+                } else {
+                    openCamera();
+                }
                 break;
         }
     }
