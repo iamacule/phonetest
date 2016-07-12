@@ -14,6 +14,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 import butterknife.ButterKnife;
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.util.AdUtil;
 import phamhungan.com.phonetestv3.util.DialogAsk;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
 import phamhungan.com.phonetestv3.util.ScreenUtil;

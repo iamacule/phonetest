@@ -23,6 +23,7 @@ import phamhungan.com.phonetestv3.ui.fragment.WifiFragment;
  * Created by MrAn PC on 27-Jan-16.
  */
 public class DataUtil {
+    public static int countToLoadAd = 0;
     public static boolean whichTest = false;
     public static final String pass = " PASSED";
     public static final String skip = " SKIPPED";

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "115432643457",
+    "firebase_url": "https://phonetestfb.firebaseio.com",
+    "project_id": "phonetestfb",
+    "storage_bucket": "phonetestfb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115432643457:android:0973a8cd074f9340",
+        "android_client_info": {
+          "package_name": "phamhungan.com.phonetestv3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115432643457-3ceqdaruon2gqg505tjvf8tbeaiqvror.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAc4jdJ4pE45HPYk0aIeNTWjOrZJ4ZKCrw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

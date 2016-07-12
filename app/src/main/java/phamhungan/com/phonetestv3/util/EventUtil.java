@@ -58,12 +58,15 @@ public class EventUtil {
                     fr instanceof BrightnessFragment){
                 intent.putExtra(fr.getActivity().getResources().getString(R.string.which_test),fr.getActivity().getResources().getString(R.string.single_test));
                 fr.getActivity().startActivity(intent);
+                activity.finish();
             }else {
                 fr.getActivity().startActivity(intent);
+                activity.finish();
             }
         }else {
             if(fr instanceof ResultFragment){
                 fr.getActivity().startActivity(intent);
+                activity.finish();
             }else {
                 DialogAsk.Build dialog = new DialogAsk.Build(activity);
                 dialog.setMessage(activity.getString(R.string.full_test_quit_ask))
@@ -75,6 +78,7 @@ public class EventUtil {
                     public void onClick(View v) {
                         fr.getActivity().startActivity(intent);
                         clearData(activity);
+                        activity.finish();
                     }
                 });
                 dialog.show();
