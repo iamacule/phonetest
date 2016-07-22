@@ -22,7 +22,7 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 /**
  * Created by MrAn on 08-Jun-16.
  */
-public abstract class MrAnActivity extends AppCompatActivity implements InitializeView {
+public abstract class MrAnActivity extends AppCompatActivity implements InitializeView{
     public PermissionUtil permissionUtil;
 
     @Override
