@@ -17,6 +17,7 @@
     <string name="telepony">TELEPONY</string>
     <string name="share">Share us</string>
     <string name="about">About us</string>
+    <string name="remove_ads">Remove Ads</string>
     <string name="microphone_test">MICROPHONE TEST</string>
     <string name="sound_test">SOUND TEST</string>
     <string name="vibrate_test">VIBRATE TEST</string>
@@ -140,4 +141,5 @@
 
     <string name="AD_UNIT_ID">ca-app-pub-1498631669155174/3224697644</string>
     <string name="APP_ID">ca-app-pub-1498631669155174~7609068041</string>
+    <string name="base64EncodedPublicKey">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiZPcwuTArys05FTRrnSFEVWnDZ0IEA8QcH6xn43FERjrV05bh2keXxuXOziwOpX3/gwNpcans233MHWgtxCF0a/cTrTrBAZm3etXi8RV9VNzzGBK3t50E3+mT7ZU6te8u+NLh6URvXzVUgePVx69oCnpYdMkO1Mv0TlhFtSOILglPYLTLCzvn5fZ+2ZH/sxm7xAihuZ0du1rGlv2qlh92ntEf3XWclBSXWVPekFN1HOFSPRyij2TrhFFByna0mq3wHaxz6T8SXrGQZ4J5cGaDYK4BIvVQCAWh4QbOGwHYjyi9B1eHJqygapATs2h1YLZXvZ2pvIsYCSjnbsEnfV74QIDAQAB</string>
 </resources>

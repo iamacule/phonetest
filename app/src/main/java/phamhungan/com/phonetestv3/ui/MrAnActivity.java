@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 import butterknife.ButterKnife;
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.inappbilling.util.AppBill;
 import phamhungan.com.phonetestv3.util.AdUtil;
 import phamhungan.com.phonetestv3.util.DialogAsk;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
@@ -24,6 +26,7 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
  */
 public abstract class MrAnActivity extends AppCompatActivity implements InitializeView{
     public PermissionUtil permissionUtil;
+    private AppBill appBill;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +39,11 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
         initializeChildValue();
         initializeChildAction();
         initBaseValue();
+        initAppBill();
+    }
+
+    private void initAppBill() {
+        appBill = AppBill.getInstance(this);
     }
 
     private void initBaseValue() {
@@ -64,6 +72,12 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        appBill.destroy();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_actions_bar, menu);
@@ -78,6 +92,9 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
                 break;
             case R.id.itemAbout:
                 ScreenUtil.goAbout(this);
+                break;
+            case R.id.removeAds:
+                //Earn money here !
                 break;
         }
         return true;
