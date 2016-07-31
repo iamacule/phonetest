@@ -95,6 +95,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
                 break;
             case R.id.removeAds:
                 //Earn money here !
+                appBill.removeAds();
                 break;
         }
         return true;

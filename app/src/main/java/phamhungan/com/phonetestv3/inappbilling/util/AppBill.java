@@ -1,5 +1,6 @@
 package phamhungan.com.phonetestv3.inappbilling.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -13,6 +14,8 @@ public class AppBill {
     private Context context;
     private static AppBill instance;
     private IabHelper mHelper;
+    private final String ITEM = "Remove Ads";
+    private final int APP_BILL_REQUEST_CODE = 0;
 
     private AppBill(Context context) {
         this.context = context;
@@ -39,6 +42,29 @@ public class AppBill {
             instance = new AppBill(context);
         return instance;
     }
+
+    public void removeAds(){
+        try {
+            mHelper.launchPurchaseFlow((Activity)context, ITEM, APP_BILL_REQUEST_CODE,
+                    mPurchaseFinishedListener, "");
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            e.printStackTrace();
+        }
+    }
+
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener
+            = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase)
+        {
+            if (result.isFailure()) {
+                Log.d(TAG, "Error purchasing: " + result);
+                return;
+            }
+            else if (purchase.getSku().equals(ITEM)) {
+                Log.d(TAG, "Purchase success: " + result);
+            }
+        }
+    };
 
     public void destroy() {
         try {
