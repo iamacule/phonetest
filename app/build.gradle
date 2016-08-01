@@ -10,8 +10,8 @@ android {
         applicationId "phamhungan.com.phonetestv3"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 16
-        versionName "1.87"
+        versionCode 17
+        versionName "1.9"
         // Enabling multidex support.
         multiDexEnabled true
     }

@@ -82,8 +82,10 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         super.onResume();
         DataUtil.countToLoadAd++;
         Log.d(TAG,"Count to load ad : "+DataUtil.countToLoadAd);
-        loadRewardedVideoAd();
-        checkToLoadAd();
+        if(needShowAds()){
+            loadRewardedVideoAd();
+            checkToLoadAd();
+        }
         checkExtra();
         setOnClick();
         checkPhoneTestPermission();
@@ -198,12 +200,14 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     @Override
     public void initializeChildValue() {
         context = this;
-        initAd();
     }
 
     @Override
     public void initializeChildAction() {
-        loadAdsMob();
+        if(Main.preferences.getAds()){
+            initAd();
+            loadAdsMob();
+        }
     }
 
     @Override
@@ -229,6 +233,11 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         if (mRewardedVideoAd.isLoaded()) {
             mRewardedVideoAd.show();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
