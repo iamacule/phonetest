@@ -33,7 +33,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     public PermissionUtil permissionUtil;
     private final String TAG = "AppBill";
     private IabHelper mHelper;
-    private final String ITEM = "Remove Ads";
+    private final String ITEM = "phamhungan.com.phonetestv3.removeads";
     private final int APP_BILL_REQUEST_CODE = 10102;
 
     @Override
