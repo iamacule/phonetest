@@ -75,6 +75,6 @@ public class Main extends MrAnActivity {
                 Intent in = new Intent(Main.this, ChooserActivity.class);
                 startActivity(in);
             }
-        }, 2000);
+        }, 1000);
     }
 }

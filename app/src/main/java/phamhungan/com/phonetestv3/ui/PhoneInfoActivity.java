@@ -7,15 +7,20 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.widget.LinearLayout;
 
 import com.jaredrummler.android.device.DeviceName;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.RandomAccessFile;
 import java.text.DecimalFormat;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import phamhungan.com.phonetestv3.R;
@@ -23,6 +28,7 @@ import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
 import phamhungan.com.phonetestv3.ui.layout.MyTableRow;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
+import phamhungan.com.phonetestv3.util.SystemUtils;
 
 /**
  * Created by MrAn PC on 21-Jan-16.
@@ -33,6 +39,7 @@ public class PhoneInfoActivity extends MrAnActivity {
 
     private String cpuInfo;
     private MyTitleTextView txtTitle;
+    private final String TAG = "PhoneInfoActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,10 +193,12 @@ public class PhoneInfoActivity extends MrAnActivity {
             InputStream is = proc.getInputStream();
             cpuInfo = getStringFromInputStream(is);
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        MyTableRow cpu = new MyTableRow(PhoneInfoActivity.this, "CPU", cpuInfo, "");
-        MyTableRow cpuAbi = new MyTableRow(PhoneInfoActivity.this, "CPU ABI", Build.CPU_ABI, "");
+        MyTableRow cpu = new MyTableRow(PhoneInfoActivity.this, "CPU", getCPUName(cpuInfo), "");
+        MyTableRow cpuCore = new MyTableRow(PhoneInfoActivity.this, "CPU CORES",""+getNumberOfCores(), "");
+        MyTableRow cpuSpeed = new MyTableRow(PhoneInfoActivity.this, "CPU SPEED",""+SystemUtils.getCPUFrequencyCurrent()/1000, " MHz");
 
         //Read RAM
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
@@ -203,10 +212,70 @@ public class PhoneInfoActivity extends MrAnActivity {
         myTableLayout.addView(name);
         myTableLayout.addView(model);
         myTableLayout.addView(cpu);
-        myTableLayout.addView(cpuAbi);
+        myTableLayout.addView(cpuCore);
+        myTableLayout.addView(cpuSpeed);
         myTableLayout.addView(ram);
         lnMain.addView(txtTitle);
         lnMain.addView(myTableLayout);
+    }
+
+    public synchronized String getCPUName(String cpuInfo) {
+        if(cpuInfo!=null){
+            String CPUName = "";
+            String[] lines = cpuInfo.split("\n");
+            for (int i = 0; i < lines.length; i++) {
+
+                if (lines[i].contains("Processor\t:")) {
+
+                    CPUName = lines[i].replace("Processor\t: ", "");
+                    break;
+                }
+            }
+            return CPUName.trim();
+        }else {
+            return "Unknown";
+        }
+    }
+
+    private int getNumberOfCores() {
+        if(Build.VERSION.SDK_INT >= 17) {
+            return Runtime.getRuntime().availableProcessors();
+        }
+        else {
+            // Use saurabh64's answer
+            return getNumCoresOldPhones();
+        }
+    }
+
+    /**
+     * Gets the number of cores available in this device, across all processors.
+     * Requires: Ability to peruse the filesystem at "/sys/devices/system/cpu"
+     * @return The number of cores, or 1 if failed to get result
+     */
+    private int getNumCoresOldPhones() {
+        //Private Class to display only CPU devices in the directory listing
+        class CpuFilter implements FileFilter {
+            @Override
+            public boolean accept(File pathname) {
+                //Check if filename is "cpu", followed by a single digit number
+                if(Pattern.matches("cpu[0-9]+", pathname.getName())) {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        try {
+            //Get directory containing CPU info
+            File dir = new File("/sys/devices/system/cpu/");
+            //Filter to only list the devices we care about
+            File[] files = dir.listFiles(new CpuFilter());
+            //Return the number of cores (virtual CPU devices)
+            return files.length;
+        } catch(Exception e) {
+            //Default to return 1 core
+            return 1;
+        }
     }
 
     //Get CPU info
