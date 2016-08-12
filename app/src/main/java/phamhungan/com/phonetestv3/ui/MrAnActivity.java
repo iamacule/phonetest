@@ -202,6 +202,11 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
                     Log.d(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
                     if (result.isFailure()) {
                         Log.d(TAG, "Error purchasing: " + result);
+                        if(result.getResponse()==7) //Item Already Owned
+                        {
+                            Log.d(TAG,"Item Already Owned . Need remove ads now !");
+                            disableAds();
+                        }
                         return;
                     }
                     else if (purchase.getSku().equals(ITEM)) {
