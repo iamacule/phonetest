@@ -17,6 +17,7 @@ import phamhungan.com.phonetestv3.R;
  */
 public class DialogUtil {
     public static void showRatingDialog(final Activity activity){
+        final Preferences preferences = new Preferences(activity);
         final Dialog dialog = new Dialog(activity);
         dialog.setContentView(R.layout.rating_dialog);
         dialog.setTitle("Rating");
@@ -33,7 +34,7 @@ public class DialogUtil {
                 } catch (android.content.ActivityNotFoundException anfe) {
                     activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(activity.getResources().getString(R.string.url))));
                 }
-                Main.preferences.storeData(Main.preferences.RATING_KEY,true);
+                preferences.storeData(preferences.RATING_KEY,true);
             }
         });
 
@@ -42,7 +43,7 @@ public class DialogUtil {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                Main.preferences.storeData(Main.preferences.RATING_KEY, false);
+                preferences.storeData(preferences.RATING_KEY, false);
                 EventUtil.backPressExitApp(activity);
             }
         });

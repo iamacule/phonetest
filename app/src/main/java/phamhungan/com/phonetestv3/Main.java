@@ -21,7 +21,6 @@ public class Main extends MrAnActivity {
     ImageView imgLogo;
 
     final Handler handler = new Handler();
-    public static Preferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +57,6 @@ public class Main extends MrAnActivity {
 
     @Override
     public void initializeChildValue() {
-        preferences = new Preferences(getApplicationContext());
     }
 
     @Override

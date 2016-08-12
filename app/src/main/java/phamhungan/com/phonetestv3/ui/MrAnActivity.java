@@ -24,6 +24,7 @@ import phamhungan.com.phonetestv3.inappbilling.util.Purchase;
 import phamhungan.com.phonetestv3.util.DialogAsk;
 import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
+import phamhungan.com.phonetestv3.util.Preferences;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
 /**
@@ -35,6 +36,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     private IabHelper mHelper;
     private final String ITEM = "phamhungan.com.phonetestv3.removeads";
     private final int APP_BILL_REQUEST_CODE = 10102;
+    public Preferences preferences;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,10 +45,10 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(getView());
         ButterKnife.bind(this);
+        initBaseValue();
         initializeChildView();
         initializeChildValue();
         initializeChildAction();
-        initBaseValue();
         initAppBill();
     }
 
@@ -56,6 +58,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
 
     private void initBaseValue() {
         permissionUtil = new PermissionUtil(this);
+        preferences = new Preferences(this);
     }
 
     protected int getView() {
@@ -104,7 +107,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     }
 
     protected boolean needShowAds(){
-        return Main.preferences.getAds();
+        return preferences.getAds();
     }
 
     @Override
@@ -127,7 +130,6 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
                 ScreenUtil.goAbout(this);
                 break;
             case R.id.removeAds:
-                //Earn money here !
                 removeAds();
                 break;
         }
@@ -248,7 +250,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     }
 
     private void disableAds(){
-        Main.preferences.storeData(Main.preferences.ADS_KEY,false);
+        preferences.storeData(preferences.ADS_KEY,false);
         Log.d(TAG,"Store value success : " + needShowAds());
         DialogInfo.Build dialog = new DialogInfo.Build(this);
         dialog.setMessage(getString(R.string.remove_ads_success));

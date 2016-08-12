@@ -162,7 +162,7 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     }
 
     private boolean checkRating() {
-        return Main.preferences.getRating();
+        return preferences.getRating();
     }
 
     @Override
@@ -204,7 +204,7 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
 
     @Override
     public void initializeChildAction() {
-        if(Main.preferences.getAds()){
+        if(preferences.getAds()){
             initAd();
             loadAdsMob();
         }
