@@ -37,4 +37,5 @@ captures/
 # Intellij
 *.iml
 idea/
+/.idea/
 
