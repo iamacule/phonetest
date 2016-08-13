@@ -4,12 +4,17 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,6 +25,7 @@ import phamhungan.com.phonetestv3.ui.MrAnActivity;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
 import phamhungan.com.phonetestv3.ui.layout.MyTableRow;
 import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
+import phamhungan.com.phonetestv3.util.DialogUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
@@ -31,6 +37,14 @@ public class AboutActivity extends MrAnActivity {
     ImageView imgLogo;
     @BindView(R.id.lnMain)
     LinearLayout lnMain;
+    @BindView(R.id.butContact)
+    Button butContact;
+    @BindView(R.id.butPremium)
+    Button butPremium;
+    @BindView(R.id.butRate)
+    Button butRate;
+    @BindView(R.id.butSoftwareLicense)
+    Button butSoftwareLicense;
 
     private MyTitleTextView txtTitle;
 
@@ -46,14 +60,16 @@ public class AboutActivity extends MrAnActivity {
 
     @Override
     public void initializeChildView() {
+        if (!checkRating())
+            butRate.setVisibility(View.GONE);
+        if (!needShowAds()) {
+            butPremium.setVisibility(View.GONE);
+        }
         imgLogo.setImageBitmap(ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.icon), ScreenUtil.getScreenWidth(getWindowManager()) / 3));
         txtTitle = new MyTitleTextView(this, "GENERAL");
         MyTableLayout myTableLayout = new MyTableLayout(this);
         MyTableRow rowVersion;
         MyTableRow rowDevelop;
-        MyTableRow rowContact;
-        MyTableRow rowRemoveAds;
-        MyTableRow rowRate;
 
         PackageInfo pInfo = null;
         try {
@@ -65,25 +81,8 @@ public class AboutActivity extends MrAnActivity {
         }
 
         rowDevelop = new MyTableRow(this, "DEVELOPED BY", "AN PHAM", "");
-        rowContact = new MyTableRow(this, "CONTACT", "an.phamhung@gmail.com", "");
-        rowContact.getValue().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/html");
-                intent.putExtra(Intent.EXTRA_EMAIL, "an.phamhung@gmail.com");
-
-                startActivity(Intent.createChooser(intent, "Send Email"));
-            }
-        });
-
-        rowRemoveAds = new MyTableRow(this, "PREMIUM USER", "Remove Ads", "");
-        rowRate = new MyTableRow(this, "RATE US", "RATE", "");
 
         myTableLayout.addView(rowDevelop);
-        myTableLayout.addView(rowContact);
-        myTableLayout.addView(rowRemoveAds);
-        myTableLayout.addView(rowRate);
 
         lnMain.addView(txtTitle);
         lnMain.addView(myTableLayout);
@@ -95,7 +94,65 @@ public class AboutActivity extends MrAnActivity {
     }
 
     @Override
-    public void initializeChildAction() {
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_actions_bar, menu);
+        for (int i = 0; i < menu.size(); i++){
+            if(menu.getItem(i).getItemId()==R.id.itemAbout){
+                menu.getItem(i).setVisible(false);
+            }
+        }
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemShare:
+                ScreenUtil.showSharedialog(this);
+                break;
+            case R.id.removeAds:
+                removeAds();
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public void initializeChildAction() {
+        butContact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/html");
+                intent.putExtra(Intent.EXTRA_EMAIL, "an.phamhung@gmail.com");
+
+                startActivity(Intent.createChooser(intent, "Send Email"));
+            }
+        });
+
+        butPremium.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removeAds();
+            }
+        });
+
+        butRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.url_market))));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getResources().getString(R.string.url))));
+                }
+            }
+        });
+
+        butSoftwareLicense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

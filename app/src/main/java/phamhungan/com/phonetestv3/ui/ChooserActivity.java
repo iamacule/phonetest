@@ -161,10 +161,6 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
         }
     }
 
-    private boolean checkRating() {
-        return preferences.getRating();
-    }
-
     @Override
     public void onClick(View v) {
         Intent intent;

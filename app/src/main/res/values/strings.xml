@@ -5,6 +5,10 @@
     <string name="email_address">Email : an.phamhung@gmail.com</string>
     <string name="full_test">Full test</string>
     <string name="phone_info">Phone information</string>
+    <string name="contact">Contact</string>
+    <string name="legal">LEGAL</string>
+    <string name="software_license">SOFTWARE LICENSE</string>
+    <string name="rate">Rate</string>
     <string name="single_test">Single test</string>
     <string name="guide">Guide</string>
     <string name="start">START</string>

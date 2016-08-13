@@ -46,10 +46,14 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
         setContentView(getView());
         ButterKnife.bind(this);
         initBaseValue();
+        initAppBill();
         initializeChildView();
         initializeChildValue();
         initializeChildAction();
-        initAppBill();
+    }
+
+    protected boolean checkRating() {
+        return preferences.getRating();
     }
 
     private void initAppBill() {
@@ -95,6 +99,22 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.itemShare:
+                ScreenUtil.showSharedialog(this);
+                break;
+            case R.id.itemAbout:
+                ScreenUtil.goAbout(this);
+                break;
+            case R.id.removeAds:
+                removeAds();
+                break;
+        }
+        return true;
+    }
+
     private void showHideRemoveAds(Menu menu) {
         for (int i = 0; i < menu.size(); i++){
             if(menu.getItem(i).getItemId()==R.id.removeAds){
@@ -118,22 +138,6 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
             // billing...
             super.onActivityResult(requestCode, resultCode, data);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.itemShare:
-                ScreenUtil.showSharedialog(this);
-                break;
-            case R.id.itemAbout:
-                ScreenUtil.goAbout(this);
-                break;
-            case R.id.removeAds:
-                removeAds();
-                break;
-        }
-        return true;
     }
 
     @Override
