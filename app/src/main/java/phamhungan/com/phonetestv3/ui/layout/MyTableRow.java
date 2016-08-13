@@ -19,7 +19,8 @@ public class MyTableRow extends TableRow {
     private TextView txtName;
     private TextView txtValue;
     private String unit;
-    public MyTableRow(Context context,String name,String value,String unit) {
+
+    public MyTableRow(Context context, String name, String value, String unit) {
         super(context);
         this.unit = unit;
         setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
@@ -41,7 +42,7 @@ public class MyTableRow extends TableRow {
         txtValue.setTextColor(Color.BLUE);
         txtValue.setGravity(Gravity.LEFT);
         txtValue.setBackgroundColor(context.getResources().getColor(R.color.colorBackground));
-        txtValue.setPadding(ScreenUtil.convertDpToPixel(5, context),0,0,0);
+        txtValue.setPadding(ScreenUtil.convertDpToPixel(5, context), ScreenUtil.convertDpToPixel(10, context), 0, ScreenUtil.convertDpToPixel(10, context));
 
         TableRow.LayoutParams p2 = new TableRow.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.5f);
         txtValue.setLayoutParams(p2);
@@ -50,7 +51,11 @@ public class MyTableRow extends TableRow {
         this.addView(txtValue);
     }
 
-    public void setValue(String newValue){
-        txtValue.setText(newValue+" "+unit);
+    public void setValue(String newValue) {
+        txtValue.setText(newValue + " " + unit);
+    }
+
+    public TextView getValue (){
+        return txtValue;
     }
 }
