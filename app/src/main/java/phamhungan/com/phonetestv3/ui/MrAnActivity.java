@@ -14,6 +14,12 @@ import android.view.View;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.ads.mediation.admob.AdMobAdapter;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import butterknife.ButterKnife;
 import phamhungan.com.phonetestv3.Main;
@@ -21,6 +27,7 @@ import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.inappbilling.util.IabHelper;
 import phamhungan.com.phonetestv3.inappbilling.util.IabResult;
 import phamhungan.com.phonetestv3.inappbilling.util.Purchase;
+import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.DialogAsk;
 import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
@@ -30,13 +37,20 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 /**
  * Created by MrAn on 08-Jun-16.
  */
-public abstract class MrAnActivity extends AppCompatActivity implements InitializeView{
+public abstract class MrAnActivity extends AppCompatActivity implements InitializeView,RewardedVideoAdListener {
     public PermissionUtil permissionUtil;
     private final String TAG = "AppBill";
     private IabHelper mHelper;
     private final String ITEM = "phamhungan.com.phonetestv3.removeads";
     private final int APP_BILL_REQUEST_CODE = 10102;
     public Preferences preferences;
+    private String AD_UNIT_ID;
+    private String APP_ID;
+
+    private final Object mLock = new Object();
+
+    private boolean mIsRewardedVideoLoading;
+    private RewardedVideoAd mRewardedVideoAd;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +66,17 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
         initializeChildAction();
     }
 
+    public void initAd(){
+        // Get an app ID
+        AD_UNIT_ID = getString(R.string.AD_UNIT_ID);
+        APP_ID = getString(R.string.APP_ID);
+
+        // Initialize the Mobile Ads SDK.
+        MobileAds.initialize(this, APP_ID);
+        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewardedVideoAd.setRewardedVideoAdListener(this);
+    }
+
     protected boolean checkRating() {
         return preferences.getRating();
     }
@@ -63,6 +88,7 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
     private void initBaseValue() {
         permissionUtil = new PermissionUtil(this);
         preferences = new Preferences(this);
+        initAd();
     }
 
     protected int getView() {
@@ -276,5 +302,67 @@ public abstract class MrAnActivity extends AppCompatActivity implements Initiali
             }
         });
         dialog.show();
+    }
+
+    public void loadRewardedVideoAd() {
+        synchronized (mLock) {
+            if (!mIsRewardedVideoLoading && !mRewardedVideoAd.isLoaded()) {
+                mIsRewardedVideoLoading = true;
+                Bundle extras = new Bundle();
+                extras.putBoolean("_noRefresh", true);
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addNetworkExtrasBundle(AdMobAdapter.class, extras)
+                        .build();
+                mRewardedVideoAd.loadAd(AD_UNIT_ID, adRequest);
+            }
+        }
+    }
+
+    public void showRewardedVideo() {
+        if (mRewardedVideoAd.isLoaded()) {
+            mRewardedVideoAd.show();
+        }
+    }
+
+    protected void checkToLoadAd() {
+        if(DataUtil.countToLoadAd>=4){
+            DataUtil.countToLoadAd=0;
+            showRewardedVideo();
+        }
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        mIsRewardedVideoLoading = false;
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        loadRewardedVideoAd();
+    }
+
+    @Override
+    public void onRewarded(RewardItem rewardItem) {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int i) {
+        mIsRewardedVideoLoading = false;
     }
 }

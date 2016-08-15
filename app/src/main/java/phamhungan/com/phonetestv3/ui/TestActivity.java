@@ -192,6 +192,11 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
         } else {
             EventUtil.onBackPress(this);
         }
+        if(needShowAds()){
+            DataUtil.countToLoadAd++;
+            loadRewardedVideoAd();
+            checkToLoadAd();
+        }
     }
 
     @Override

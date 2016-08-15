@@ -40,7 +40,7 @@ import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 /**
  * Created by MrAn PC on 20-Jan-16.
  */
-public class ChooserActivity extends MrAnActivity implements View.OnClickListener,RewardedVideoAdListener {
+public class ChooserActivity extends MrAnActivity implements View.OnClickListener {
     @BindView(R.id.butInfo)
     Button butInfo;
     @BindView(R.id.butSingle)
@@ -53,49 +53,23 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     private ChooserActivity context;
     private String stringExtra;
     private final String TAG = "PhoneTest";
-    private String AD_UNIT_ID;
-    private String APP_ID;
-
-    private final Object mLock = new Object();
-
-    private boolean mIsRewardedVideoLoading;
-    private RewardedVideoAd mRewardedVideoAd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void initAd(){
-        // Get an app ID
-        AD_UNIT_ID = context.getString(R.string.AD_UNIT_ID);
-        APP_ID = context.getString(R.string.APP_ID);
-
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(context, APP_ID);
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(context);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        DataUtil.countToLoadAd++;
-        Log.d(TAG,"Count to load ad : "+DataUtil.countToLoadAd);
         if(needShowAds()){
+            DataUtil.countToLoadAd++;
             loadRewardedVideoAd();
             checkToLoadAd();
         }
         checkExtra();
         setOnClick();
         checkPhoneTestPermission();
-    }
-
-    private void checkToLoadAd() {
-        if(DataUtil.countToLoadAd>=5){
-            DataUtil.countToLoadAd=0;
-            showRewardedVideo();
-        }
     }
 
     private void checkExtra() {
@@ -209,65 +183,5 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
     @Override
     protected int getView() {
         return R.layout.activity_chooser;
-    }
-
-    public void loadRewardedVideoAd() {
-        synchronized (mLock) {
-            if (!mIsRewardedVideoLoading && !mRewardedVideoAd.isLoaded()) {
-                mIsRewardedVideoLoading = true;
-                Bundle extras = new Bundle();
-                extras.putBoolean("_noRefresh", true);
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addNetworkExtrasBundle(AdMobAdapter.class, extras)
-                        .build();
-                mRewardedVideoAd.loadAd(AD_UNIT_ID, adRequest);
-            }
-        }
-    }
-
-    public void showRewardedVideo() {
-        if (mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onRewardedVideoAdLoaded() {
-        mIsRewardedVideoLoading = false;
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        loadRewardedVideoAd();
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-        mIsRewardedVideoLoading = false;
     }
 }
