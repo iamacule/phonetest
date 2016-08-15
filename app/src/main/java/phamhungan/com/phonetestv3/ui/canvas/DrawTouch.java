@@ -11,10 +11,13 @@ import android.graphics.Point;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Typeface;
+import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.util.DataUtil;
+import phamhungan.com.phonetestv3.util.ScreenUtil;
 
 @SuppressLint("ClickableViewAccessibility")
 public class DrawTouch extends View{
@@ -26,7 +29,7 @@ public class DrawTouch extends View{
 	private Paint pClear = new Paint();
 	private int width,height;
 	private int Xcham,Ycham;
-	
+
 	public DrawTouch(Context context) {
 		super(context);
 		setFocusable(true);
@@ -42,7 +45,23 @@ public class DrawTouch extends View{
 		pClear.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
 		setBackgroundResource(R.drawable.background_caro);
 	}
-	
+
+	public DrawTouch(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		setFocusable(true);
+		setFocusableInTouchMode(true);
+		p.setColor(Color.RED);
+		p.setAntiAlias(true);
+		p2.setColor(Color.BLUE);
+		p2.setTextSize(36);
+		pMessage.setColor(Color.BLUE);
+		pMessage.setTextSize(44);
+		pMessage.setTextAlign(Paint.Align.CENTER);
+		pMessage.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+		pClear.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		setBackgroundResource(R.drawable.background_caro);
+	}
+
 	//sự kiện khi ta chạm vào màn hình
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
@@ -71,8 +90,7 @@ public class DrawTouch extends View{
 			canvas.drawRect(0, 0, 0, 0, pClear);
 			for(int i = 0; i<point.size(); i++)
 			{
-				//vẽ các hình tròn lên những điểm mà ta đã chạm trên màn hình
-				canvas.drawCircle(point.get(i).x, point.get(i).y, 20, p);
+				canvas.drawCircle(point.get(i).x, point.get(i).y, DataUtil.radius, p);
 				Xcham = point.get(i).x;
 				Ycham = point.get(i).y;
 			}

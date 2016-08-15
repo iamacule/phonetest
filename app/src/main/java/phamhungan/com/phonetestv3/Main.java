@@ -11,6 +11,7 @@ import com.facebook.appevents.AppEventsLogger;
 import butterknife.BindView;
 import phamhungan.com.phonetestv3.ui.ChooserActivity;
 import phamhungan.com.phonetestv3.ui.MrAnActivity;
+import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.Preferences;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
@@ -57,6 +58,7 @@ public class Main extends MrAnActivity {
 
     @Override
     public void initializeChildValue() {
+        DataUtil.radius = (int)ScreenUtil.getScreenWidth(getWindowManager())/100;
     }
 
     @Override

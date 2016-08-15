@@ -25,6 +25,7 @@ import phamhungan.com.phonetestv3.ui.fragment.WifiFragment;
 public class DataUtil {
     public static int countToLoadAd = 0;
     public static boolean whichTest = false;
+    public static int radius;
     public static final String pass = " PASSED";
     public static final String skip = " SKIPPED";
     public static final String fail = " FAILED";
