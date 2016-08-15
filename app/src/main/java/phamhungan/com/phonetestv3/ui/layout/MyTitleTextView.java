@@ -17,7 +17,7 @@ public class MyTitleTextView extends TextView {
     public MyTitleTextView(Context context, String value) {
         super(context);
         this.setText(value);
-        this.setPadding(ScreenUtil.convertDpToPixel(5, context), ScreenUtil.convertDpToPixel(5,context), 0, ScreenUtil.convertDpToPixel(5,context));
+        this.setPadding(ScreenUtil.convertDpToPixel(5, context), ScreenUtil.convertDpToPixel(10,context), 0, ScreenUtil.convertDpToPixel(10,context));
         this.setTypeface(null, Typeface.BOLD);
         this.setTextColor(Color.WHITE);
         this.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
