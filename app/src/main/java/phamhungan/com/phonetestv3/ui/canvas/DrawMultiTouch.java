@@ -43,7 +43,26 @@ public class DrawMultiTouch extends View{
 		textPaint.setColor(Color.BLUE);
 	    textPaint.setTextSize(50);
 	}
-	
+
+	public DrawMultiTouch(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		//setFocusable(true);
+		//setFocusableInTouchMode(true);
+		setBackgroundResource(R.drawable.background_caro);
+		mActivePointers = new SparseArray<PointF>();
+		mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mPaint.setColor(Color.RED);
+		mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
+		pMessage.setColor(Color.BLUE);
+		pMessage.setTextSize(50);
+		pMessage.setTextAlign(Paint.Align.CENTER);
+		pMessage.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+		pClear.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+		textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		textPaint.setColor(Color.BLUE);
+		textPaint.setTextSize(50);
+	}
+
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		// lấ vị trí điểm chạm vào
@@ -103,7 +122,7 @@ public class DrawMultiTouch extends View{
 				PointF point = mActivePointers.valueAt(i);
 				if (point != null)
 					mPaint.setColor(colors[i % 9]);
-				canvas.drawCircle(point.x, point.y, width/6, mPaint);
+				canvas.drawCircle(point.x, point.y, width/8, mPaint);
 				canvas.drawLine(point.x, point.y, point.x, 0, mPaint);
 				canvas.drawLine(point.x, point.y, point.x, height, mPaint);
 				canvas.drawLine(point.x, point.y, 0, point.y, mPaint);
