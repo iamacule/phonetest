@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.DataUtil;
 
 /**
@@ -50,7 +51,7 @@ public class BrightnessFragment extends BaseFragment {
                     wait = false;
                 }
                 else
-                    Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_brightness2), Toast.LENGTH_SHORT).show();
+                    Boast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_brightness2)).show();
             }
         });
         action();
@@ -68,7 +69,7 @@ public class BrightnessFragment extends BaseFragment {
     }
 
     private void action() {
-        Toast.makeText(this.getActivity(), getActivity().getResources().getString(R.string.toast_brightness), Toast.LENGTH_SHORT).show();
+        Boast.makeText(this.getActivity(), getActivity().getResources().getString(R.string.toast_brightness)).show();
         pbBri.setProgress(0);
         isRunning.set(false);
         thread=new Thread(new Runnable() {

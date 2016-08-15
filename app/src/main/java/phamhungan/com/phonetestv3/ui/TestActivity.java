@@ -24,6 +24,7 @@ import phamhungan.com.phonetestv3.ui.fragment.SensorFragment;
 import phamhungan.com.phonetestv3.ui.fragment.SingleTest;
 import phamhungan.com.phonetestv3.ui.fragment.SoundFragment;
 import phamhungan.com.phonetestv3.ui.fragment.TouchFragment;
+import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.AminationUtil;
 import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.EventUtil;
@@ -212,9 +213,9 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
 
     public void toastResultNavigation() {
         if (DataUtil.whichTest) {
-            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_full)), Toast.LENGTH_LONG).show();
+            Boast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_full))).show();
         } else {
-            Toast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_single)), Toast.LENGTH_LONG).show();
+            Boast.makeText(this, Html.fromHtml(getResources().getString(R.string.message_show_hide_single))).show();
         }
     }
 

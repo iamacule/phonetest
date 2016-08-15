@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 import java.util.Set;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.DataUtil;
 
 /**
@@ -43,7 +44,7 @@ public class BlueToothFragment extends BaseFragment{
                 if (BA.isEnabled())
                 {
                     BA.disable();
-                    Toast.makeText(getActivity(), "Turned off", Toast.LENGTH_LONG).show();
+                    Boast.makeText(getActivity(), "Turned off").show();
                     tgBlue.setText("Turn Off");
                     tgBlue.setChecked(false);
                     butVisible.setVisibility(View.INVISIBLE);
@@ -54,7 +55,7 @@ public class BlueToothFragment extends BaseFragment{
                 {
                     Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(turnOn, 1);
-                    Toast.makeText(getActivity(),"Turned on",Toast.LENGTH_LONG).show();
+                    Boast.makeText(getActivity(),"Turned on").show();
                     tgBlue.setText("Turn On");
                     tgBlue.setChecked(true);
                     butVisible.setVisibility(View.VISIBLE);
@@ -73,7 +74,7 @@ public class BlueToothFragment extends BaseFragment{
                 }
                 else
                 {
-                    Toast.makeText(getActivity(),"Turned on first",Toast.LENGTH_LONG).show();
+                    Boast.makeText(getActivity(),"Turned on first").show();
                 }
             }
         });
@@ -88,14 +89,14 @@ public class BlueToothFragment extends BaseFragment{
                     if(pairedDevices.size()>0){
                         for(BluetoothDevice bt : pairedDevices)
                             txtList.append("   "+bt.getName()+"\n");
-                        Toast.makeText(getActivity(),"Showing Paired Devices",Toast.LENGTH_SHORT).show();
+                        Boast.makeText(getActivity(),"Showing Paired Devices").show();
                     }else {
                         txtList.setText("Not found");
                     }
                 }
                 else
                 {
-                    Toast.makeText(getActivity(),"Turned on first",Toast.LENGTH_LONG).show();
+                    Boast.makeText(getActivity(),"Turned on first").show();
                 }
             }
         });

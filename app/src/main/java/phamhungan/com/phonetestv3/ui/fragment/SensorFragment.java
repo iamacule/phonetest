@@ -18,6 +18,7 @@ import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
 import phamhungan.com.phonetestv3.ui.layout.MyTableRow;
 import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
+import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.DataUtil;
 
 /**
@@ -66,7 +67,7 @@ public class SensorFragment extends BaseFragment implements SensorEventListener 
         sMgr.registerListener(this, PRO, SensorManager.SENSOR_DELAY_NORMAL);
         sMgr.registerListener(this, LI, SensorManager.SENSOR_DELAY_NORMAL);
         if(DataUtil.whichTest){
-            Toast.makeText(getActivity(), Html.fromHtml(getActivity().getResources().getString(R.string.message_show_hide_single_sensor)),Toast.LENGTH_LONG).show();
+            Boast.makeText(getActivity(), Html.fromHtml(getActivity().getResources().getString(R.string.message_show_hide_single_sensor))).show();
         }
     }
 
