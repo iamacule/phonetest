@@ -25,6 +25,7 @@ import phamhungan.com.phonetestv3.ui.MrAnActivity;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
 import phamhungan.com.phonetestv3.ui.layout.MyTableRow;
 import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
+import phamhungan.com.phonetestv3.util.DialogLicense;
 import phamhungan.com.phonetestv3.util.DialogUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
@@ -60,8 +61,6 @@ public class AboutActivity extends MrAnActivity {
 
     @Override
     public void initializeChildView() {
-        if (!checkRating())
-            butRate.setVisibility(View.GONE);
         if (!needShowAds()) {
             butPremium.setVisibility(View.GONE);
         }
@@ -100,6 +99,11 @@ public class AboutActivity extends MrAnActivity {
             if(menu.getItem(i).getItemId()==R.id.itemAbout){
                 menu.getItem(i).setVisible(false);
             }
+            if(menu.getItem(i).getItemId()==R.id.removeAds){
+                if(!needShowAds()){
+                    menu.getItem(i).setVisible(false);
+                }
+            }
         }
         return true;
     }
@@ -122,11 +126,13 @@ public class AboutActivity extends MrAnActivity {
         butContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("text/html");
-                intent.putExtra(Intent.EXTRA_EMAIL, "an.phamhung@gmail.com");
-
-                startActivity(Intent.createChooser(intent, "Send Email"));
+                Intent gmail = new Intent(Intent.ACTION_VIEW);
+                gmail.setClassName("com.google.android.gm","com.google.android.gm.ComposeActivityGmail");
+                gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "an.phamhung@gmail.com" });
+                gmail.setData(Uri.parse("an.phamhung@gmail.com"));
+                gmail.putExtra(Intent.EXTRA_SUBJECT, "PhoneTest (Hardware) : Contacts");
+                gmail.setType("plain/text");
+                startActivity(gmail);
             }
         });
 
@@ -151,7 +157,8 @@ public class AboutActivity extends MrAnActivity {
         butSoftwareLicense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                DialogLicense.Build dialog = new DialogLicense.Build(AboutActivity.this);
+                dialog.show();
             }
         });
     }
