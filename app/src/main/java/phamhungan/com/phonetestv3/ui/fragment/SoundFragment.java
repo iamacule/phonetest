@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
@@ -34,6 +37,8 @@ public class SoundFragment extends BaseFragment {
     private Thread thread;
     private Bitmap bitmap1;
     private Bitmap bitmap2;
+    Button btnPlay;
+    private boolean isPlaying = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
@@ -44,6 +49,7 @@ public class SoundFragment extends BaseFragment {
             super.setHasOptionsMenu(true);
         }
         imgSpeaker = (ImageView)view.findViewById(R.id.imgSpeaker);
+        btnPlay = (Button) view.findViewById(R.id.btnPlay);
         bitmap1 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.speaker1), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) /2);
         bitmap2 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.speaker2), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
         imgSpeaker.setImageBitmap(bitmap1);
@@ -73,13 +79,33 @@ public class SoundFragment extends BaseFragment {
                     txtMessage.setText(getActivity().getResources().getString(R.string.message_sound)+" "+msg.arg1+"");
                     if(msg.arg1==0){
                         txtMessage.setText("");
-                        playSound(R.raw.soundtest);
+                        playSound();
                         playAnimation();
-                        Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_sound), Toast.LENGTH_SHORT).show();
+                        txtMessage.setText(getString(R.string.toast_sound));
+                        isPlaying = true;
+                        btnPlay.setVisibility(View.VISIBLE);
                     }
                 }catch (Exception e){}
             }
         };
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPlaying){
+                    isPlaying = false;
+                    btnPlay.setText(getString(R.string.play));
+                    txtMessage.setText(getString(R.string.play_again));
+                    cleanUpSound();
+                    stopAnimation();
+                }else {
+                    isPlaying = true;
+                    btnPlay.setText(getString(R.string.stop));playSound();
+                    playAnimation();
+                    txtMessage.setText(getString(R.string.toast_sound));
+                }
+            }
+        });
     }
 
     // Stop the sound and cleanup the media player
@@ -92,11 +118,11 @@ public class SoundFragment extends BaseFragment {
     }
 
     // Play the sound and start the timer
-    private void playSound(int resourceId) {
+    private void playSound() {
         // Cleanup any previous sound files
         cleanUpSound();
         // Create a new media player instance and start it
-        mPlayertestSound = MediaPlayer.create(getActivity(), resourceId);
+        mPlayertestSound = MediaPlayer.create(getActivity(), Settings.System.DEFAULT_RINGTONE_URI);
         final AudioManager mAudioManager = (AudioManager) getActivity().getSystemService(getActivity().AUDIO_SERVICE);
         final int originalVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);

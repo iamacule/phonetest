@@ -29,25 +29,6 @@ public abstract class BaseFragment extends Fragment {
         return inflater.inflate(getRootLayout(), container, false);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.clear();
-        inflater.inflate(R.menu.menu_actions_bar, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.itemShare:
-                ScreenUtil.showSharedialog(getActivity());
-                break;
-            case R.id.itemAbout:
-                ScreenUtil.goAbout(this.getActivity());
-                break;
-        }
-        return true;
-    }
-
     protected void setFullScreen(boolean fullScreen){
         TestActivity.instance.setFullScreen(fullScreen);
     }

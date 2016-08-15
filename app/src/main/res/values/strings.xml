@@ -53,7 +53,8 @@
     <string name="press_stop">Press Stop button to stop record</string>
     <string name="press_play">Press Play button to hear your voice</string>
     <string name="ask_hear">Do you hear your voice?</string>
-    <string name="toast_sound">Do you hear the music?</string>
+    <string name="toast_sound">Do you hear your default ringtone?</string>
+    <string name="play_again">Press Play button to play again !</string>
     <string name="toast_vibrate">Do you feel your device are vibrating?</string>
     <string name="toast_brightness">Do you feel the brightness increasing?</string>
     <string name="toast_camera">Tap the lens to open your camera</string>
