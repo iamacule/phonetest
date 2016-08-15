@@ -78,7 +78,6 @@ public class SoundFragment extends BaseFragment {
                 try{
                     txtMessage.setText(getActivity().getResources().getString(R.string.message_sound)+" "+msg.arg1+"");
                     if(msg.arg1==0){
-                        txtMessage.setText("");
                         playSound();
                         playAnimation();
                         txtMessage.setText(getString(R.string.toast_sound));

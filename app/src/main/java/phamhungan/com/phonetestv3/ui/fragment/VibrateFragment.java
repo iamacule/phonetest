@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,8 @@ public class VibrateFragment extends BaseFragment {
     private Handler handler;
     private Thread thread;
     private Bitmap bp1;
+    private boolean isStarting = false;
+    private Button btnStart;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,6 +47,7 @@ public class VibrateFragment extends BaseFragment {
             super.setHasOptionsMenu(true);
         }
         imgVibrate = (ImageView)view.findViewById(R.id.imgVibrate);
+        btnStart = (Button) view.findViewById(R.id.btnStart);
         bp1 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.vibrate1), ScreenUtil.getScreenWidth(getActivity().getWindowManager())/2);
         imgVibrate.setImageBitmap(bp1);
         txtMessage = (TextView)view.findViewById(R.id.txtMessage);
@@ -70,14 +74,34 @@ public class VibrateFragment extends BaseFragment {
                 try{
                     txtMessage.setText(getActivity().getResources().getString(R.string.message_vibrate)+" "+msg.arg1+"");
                     if(msg.arg1==0){
-                        txtMessage.setText("");
                         playAnimation();
                         vibrate();
-                        Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.toast_vibrate), Toast.LENGTH_SHORT).show();
+                        txtMessage.setText(getString(R.string.toast_vibrate));
+                        btnStart.setVisibility(View.VISIBLE);
+                        isStarting = true;
                     }
                 }catch (Exception e){}
             }
         };
+
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isStarting){
+                    isStarting = false;
+                    btnStart.setText(getString(R.string.start_small));
+                    txtMessage.setText(getString(R.string.start_again));
+                    stopAnimation();
+                    stopVibrate();
+                }else {
+                    isStarting = true;
+                    btnStart.setText(getString(R.string.stop));
+                    playAnimation();
+                    vibrate();
+                    txtMessage.setText(getString(R.string.toast_vibrate));
+                }
+            }
+        });
     }
 
     private void playAnimation() {
