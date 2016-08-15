@@ -61,12 +61,12 @@ public class Main extends MrAnActivity {
 
     @Override
     public void initializeChildAction() {
-        //Delay 1s
-        try
-        {
-            Thread.sleep(1000);
-        }
-        catch(Exception e){}
+//        //Delay 1s
+//        try
+//        {
+//            Thread.sleep(1000);
+//        }
+//        catch(Exception e){}
 
         //Delay 3s to load activity_choose
         handler.postDelayed(new Runnable() {
@@ -75,6 +75,6 @@ public class Main extends MrAnActivity {
                 Intent in = new Intent(Main.this, ChooserActivity.class);
                 startActivity(in);
             }
-        }, 1000);
+        }, 800);
     }
 }
