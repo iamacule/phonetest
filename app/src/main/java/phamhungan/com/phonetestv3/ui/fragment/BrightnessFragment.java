@@ -25,6 +25,7 @@ import phamhungan.com.phonetestv3.util.DataUtil;
  */
 public class BrightnessFragment extends BaseFragment {
     private TextView txtMessage;
+    private TextView txtMessage2;
     private ImageView butAgain;
     private ProgressBar pbBri;
     private Handler handler;
@@ -40,6 +41,7 @@ public class BrightnessFragment extends BaseFragment {
         setFullScreen(false);
         pbBri = (ProgressBar)view.findViewById(R.id.pbBri);
         txtMessage=(TextView)view.findViewById(R.id.txtMessage);
+        txtMessage2=(TextView)view.findViewById(R.id.txtMessage2);
         butAgain = (ImageView)view.findViewById(R.id.butAgain);
         oldAttributes = getActivity().getWindow().getAttributes();
         butAgain.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +71,7 @@ public class BrightnessFragment extends BaseFragment {
     }
 
     private void action() {
-        Boast.makeText(this.getActivity(), getActivity().getResources().getString(R.string.toast_brightness)).show();
+        txtMessage2.setText(getString(R.string.toast_brightness));
         pbBri.setProgress(0);
         isRunning.set(false);
         thread=new Thread(new Runnable() {
@@ -101,6 +103,9 @@ public class BrightnessFragment extends BaseFragment {
                     newAttributes.screenBrightness = light;
                     getActivity().getWindow().setAttributes(newAttributes);
                     txtMessage.setText("Brightness : " + msg.arg1 + "%");
+                    if(msg.arg1==100){
+                        txtMessage2.setText("");
+                    }
                 }catch (Exception e){
 
                 }
