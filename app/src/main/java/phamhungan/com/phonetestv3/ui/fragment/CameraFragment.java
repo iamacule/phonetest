@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,7 +25,7 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
  * Created by MrAn PC on 25-Jan-16.
  */
 public class CameraFragment extends BaseFragment implements View.OnClickListener {
-    private ImageView imgSpeaker;
+    private ImageView imgCamera;
     private TextView txtMessage;
     private Bitmap bpLens;
 
@@ -38,18 +39,18 @@ public class CameraFragment extends BaseFragment implements View.OnClickListener
         } else {
             super.setHasOptionsMenu(true);
         }
-        imgSpeaker = (ImageView) view.findViewById(R.id.imgSpeaker);
+        imgCamera = (ImageView) view.findViewById(R.id.imgCamera);
         txtMessage = (TextView) view.findViewById(R.id.txtMessage);
         bpLens = ResizeBitmap.resize(BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.lens), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 4);
-        imgSpeaker.setImageBitmap(bpLens);
+        imgCamera.setImageBitmap(bpLens);
         txtMessage.setText(getActivity().getResources().getString(R.string.toast_camera));
-        imgSpeaker.setOnClickListener(this);
+        imgCamera.setOnClickListener(this);
         return view;
     }
 
     @Override
     protected int getRootLayout() {
-        return R.layout.layout_sound_test;
+        return R.layout.layout_camera_test;
     }
 
     private void openCamera() {
@@ -62,18 +63,31 @@ public class CameraFragment extends BaseFragment implements View.OnClickListener
         super.onActivityResult(requestCode, resultCode, data);
         try {
             Bitmap bp = ResizeBitmap.resize((Bitmap) data.getExtras().get("data"), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
-
-            imgSpeaker.setImageBitmap(bp);
+            Bitmap test = fixOrientation(bp);
+            if(null==test)
+                imgCamera.setImageBitmap(bp);
+            else
+                imgCamera.setImageBitmap(test);
             txtMessage.setText(getActivity().getResources().getString(R.string.toast_camera2));
         } catch (Exception ex) {
-            imgSpeaker.setImageBitmap(bpLens);
+            imgCamera.setImageBitmap(bpLens);
         }
+    }
+
+    public Bitmap fixOrientation(Bitmap bp) {
+        if (bp.getWidth() > bp.getHeight()) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            bp = Bitmap.createBitmap(bp , 0, 0, bp.getWidth(), bp.getHeight(), matrix, true);
+            return bp;
+        }
+        return null;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.imgSpeaker:
+            case R.id.imgCamera:
                 if (!PermissionUtil.isPermissionCameraGranted) {
                     ((TestActivity) getActivity()).showDialogAskPermission(getString(R.string.permission_camera_ask),
                             Manifest.permission.CAMERA,
