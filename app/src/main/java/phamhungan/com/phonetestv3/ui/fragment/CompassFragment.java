@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
@@ -36,9 +37,10 @@ public class CompassFragment extends BaseFragment implements SensorEventListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
-        if(DataUtil.whichTest){
+        if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-        }else {
+            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+        } else {
             super.setHasOptionsMenu(true);
         }
         mSensorManager = (SensorManager) getActivity().getSystemService(getActivity().SENSOR_SERVICE);

@@ -40,9 +40,10 @@ public class SensorFragment extends BaseFragment implements SensorEventListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
-        if(DataUtil.whichTest){
+        if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-        }else {
+            TestActivity.instance.lnBottom.setVisibility(View.GONE);
+        } else {
             super.setHasOptionsMenu(true);
         }
         TestActivity.instance.lnBottom.setVisibility(View.GONE);

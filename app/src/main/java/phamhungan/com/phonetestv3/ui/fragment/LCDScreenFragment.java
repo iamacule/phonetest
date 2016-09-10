@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
+import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
 /**
@@ -21,7 +22,6 @@ public class LCDScreenFragment extends BaseFragment {
     private LinearLayout lnLCD;
     private ImageView btnInfo;
     private TextView txtMessage;
-    private LinearLayout.LayoutParams layoutParams;
     private int position = 0;
     private int[] colorArray = {Color.RED, Color.GREEN, Color.BLUE, Color.WHITE, Color.YELLOW, Color.BLACK};
 
@@ -29,6 +29,11 @@ public class LCDScreenFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        if(DataUtil.whichTest){
+            super.setHasOptionsMenu(false);
+        }else {
+            super.setHasOptionsMenu(true);
+        }
         lnLCD = (LinearLayout) view.findViewById(R.id.lnMain);
         btnInfo = (ImageView) view.findViewById(R.id.btnInfo);
         txtMessage = (TextView) view.findViewById(R.id.txtMessage);
@@ -57,10 +62,7 @@ public class LCDScreenFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setFullScreen(true);
-        TestActivity.instance.lnBottom.setVisibility(View.GONE);
-        layoutParams = (LinearLayout.LayoutParams) lnLCD.getLayoutParams();
-        layoutParams.weight = ScreenUtil.getScreenHeight(getActivity().getWindowManager());
-        lnLCD.setLayoutParams(layoutParams);
+        TestActivity.instance.lnBottom.setVisibility(View.GONE);;
     }
 
     @Override

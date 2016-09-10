@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.DataUtil;
 
@@ -39,6 +40,12 @@ public class BrightnessFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
+        if (DataUtil.whichTest) {
+            super.setHasOptionsMenu(false);
+            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+        } else {
+            super.setHasOptionsMenu(true);
+        }
         pbBri = (ProgressBar)view.findViewById(R.id.pbBri);
         txtMessage=(TextView)view.findViewById(R.id.txtMessage);
         txtMessage2=(TextView)view.findViewById(R.id.txtMessage2);

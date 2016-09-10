@@ -12,6 +12,7 @@ import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.canvas.DrawMultiTouch;
 import phamhungan.com.phonetestv3.ui.canvas.DrawTouch;
+import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
 /**
@@ -23,6 +24,11 @@ public class MultiTouchFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (DataUtil.whichTest) {
+            super.setHasOptionsMenu(false);
+        } else {
+            super.setHasOptionsMenu(true);
+        }
         btnInfo = (ImageView) view.findViewById(R.id.btnInfo);
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override

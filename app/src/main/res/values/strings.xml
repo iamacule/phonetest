@@ -60,8 +60,7 @@
     <string name="toast_vibrate">Do you feel your device are vibrating?</string>
     <string name="toast_brightness">Do you feel the brightness increasing?</string>
     <string name="toast_camera">Tap the lens to open your camera</string>
-    <string name="toast_camera2">Do you see your thumbnail picture?
-\nThis is only thumbnail !</string>
+    <string name="toast_camera2">Do you see your camera picture thumbnail?</string>
     <string name="toast_camera3">You are canceled</string>
     <string name="toast_flash_error">Your phone does not have flash</string>
     <string name="notice">Notice</string>

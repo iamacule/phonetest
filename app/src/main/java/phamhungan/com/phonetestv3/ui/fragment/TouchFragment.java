@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
+import phamhungan.com.phonetestv3.util.DataUtil;
 
 /**
  * Created by MrAn PC on 24-Jan-16.
@@ -20,6 +21,11 @@ public class TouchFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        if (DataUtil.whichTest) {
+            super.setHasOptionsMenu(false);
+        } else {
+            super.setHasOptionsMenu(true);
+        }
         btnInfo = (ImageView) view.findViewById(R.id.btnInfo);
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override

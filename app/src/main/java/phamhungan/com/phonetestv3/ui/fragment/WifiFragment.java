@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.layout.MyTableLayout;
 import phamhungan.com.phonetestv3.ui.layout.MyTableRow;
 import phamhungan.com.phonetestv3.ui.layout.MyTitleTextView;
@@ -39,9 +40,10 @@ public class WifiFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
-        if(DataUtil.whichTest){
+        if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-        }else {
+            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+        } else {
             super.setHasOptionsMenu(true);
         }
         lnMain = (LinearLayout)view.findViewById(R.id.lnMain);

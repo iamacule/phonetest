@@ -48,16 +48,6 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     private boolean isFullScreen = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            stringExtra = extras.getString(getResources().getString(R.string.which_test));
-        }
-        setLayout(stringExtra);
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
         EventUtil.clearData(this);
@@ -225,7 +215,6 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
     @Override
     public void initializeChildView() {
 
-
     }
 
     @Override
@@ -243,6 +232,15 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
         butPass.setOnClickListener(this);
         butSkip.setOnClickListener(this);
         butFail.setOnClickListener(this);
+        setUI();
+    }
+
+    private void setUI() {
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            stringExtra = extras.getString(getResources().getString(R.string.which_test));
+        }
+        setLayout(stringExtra);
     }
 
     @Override

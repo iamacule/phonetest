@@ -16,6 +16,7 @@ import android.widget.ToggleButton;
 import java.util.Set;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.toast.Boast;
 import phamhungan.com.phonetestv3.util.DataUtil;
 
@@ -33,6 +34,12 @@ public class BlueToothFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
+        if (DataUtil.whichTest) {
+            super.setHasOptionsMenu(false);
+            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+        } else {
+            super.setHasOptionsMenu(true);
+        }
         txtList = (TextView)view.findViewById(R.id.txtList);
         tgBlue = (ToggleButton)view.findViewById(R.id.tgBlue);
         butVisible = (Button)view.findViewById(R.id.butVisible);

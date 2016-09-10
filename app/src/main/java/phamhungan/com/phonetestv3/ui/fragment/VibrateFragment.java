@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import phamhungan.com.phonetestv3.R;
+import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.util.DataUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
@@ -43,6 +44,7 @@ public class VibrateFragment extends BaseFragment {
         setFullScreen(false);
         if(DataUtil.whichTest){
             super.setHasOptionsMenu(false);
+            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
         }else {
             super.setHasOptionsMenu(true);
         }
