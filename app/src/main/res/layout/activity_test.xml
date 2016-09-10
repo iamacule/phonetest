@@ -6,7 +6,7 @@
     android:layout_height="fill_parent">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="phamhungan.com.phonetestv3.ui.fragment.NullFragment"
+        android:name="phamhungan.com.phonetestv3.ui.fragment.SingleTest"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
     </fragment>
