@@ -20,11 +20,11 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
  * Created by MrAn PC on 22-Jan-16.
  */
 public abstract class BaseFragment extends Fragment {
-    private int idLayout;
     protected Context context;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
         context = getActivity();
         return inflater.inflate(getRootLayout(), container, false);
     }
@@ -34,6 +34,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected int getRootLayout(){
-        return idLayout;
+        return -1;
     }
 }
