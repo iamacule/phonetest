@@ -85,19 +85,6 @@ public class ScreenUtil {
     /*
      * Set Fragment for Activities
      */
-    public static void changeFragment(Fragment fr,FragmentManager fragmentManager){
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-        fragmentTransaction.replace(R.id.mainFragment,fr);
-        fragmentTransaction.commit();
-        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); ++i) {
-            fragmentManager.popBackStack();
-        }
-    }
-
-    /*
-     * Set Fragment for Activities
-     */
     public static void goAbout(Activity activity){
         Intent intent = new Intent(activity,AboutActivity.class);
         activity.startActivity(intent);

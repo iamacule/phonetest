@@ -42,11 +42,11 @@ public class SensorFragment extends BaseFragment implements SensorEventListener 
         setFullScreen(false);
         if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-            TestActivity.instance.lnBottom.setVisibility(View.GONE);
+            getRootActivity().lnBottom.setVisibility(View.GONE);
         } else {
             super.setHasOptionsMenu(true);
         }
-        TestActivity.instance.lnBottom.setVisibility(View.GONE);
+        getRootActivity().lnBottom.setVisibility(View.GONE);
         lnMain = (LinearLayout)view.findViewById(R.id.lnMain);
         tbAC = new MyTableLayout(getActivity());
         tbGY = new MyTableLayout(getActivity());

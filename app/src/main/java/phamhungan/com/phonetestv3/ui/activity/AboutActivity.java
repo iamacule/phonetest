@@ -126,13 +126,10 @@ public class AboutActivity extends MrAnActivity {
         butContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gmail = new Intent(Intent.ACTION_VIEW);
-                gmail.setClassName("com.google.android.gm","com.google.android.gm.ComposeActivityGmail");
-                gmail.putExtra(Intent.EXTRA_EMAIL, new String[] { "an.phamhung@gmail.com" });
-                gmail.setData(Uri.parse("an.phamhung@gmail.com"));
-                gmail.putExtra(Intent.EXTRA_SUBJECT, "PhoneTest (Hardware) : Contacts");
-                gmail.setType("plain/text");
-                startActivity(gmail);
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto","an.phamhung@gmail.com", null));
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "PhoneTest (Hardware) : Contacts");
+                startActivity(Intent.createChooser(emailIntent, "Send email..."));
             }
         });
 

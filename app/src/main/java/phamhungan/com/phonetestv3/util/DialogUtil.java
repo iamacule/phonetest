@@ -44,7 +44,7 @@ public class DialogUtil {
             public void onClick(View v) {
                 dialog.dismiss();
                 preferences.storeData(preferences.RATING_KEY, false);
-                EventUtil.backPressExitApp(activity);
+                activity.moveTaskToBack(true);
             }
         });
 

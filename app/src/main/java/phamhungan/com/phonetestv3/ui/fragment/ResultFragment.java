@@ -11,7 +11,6 @@ import phamhungan.com.phonetestv3.R;
 import phamhungan.com.phonetestv3.ui.TestActivity;
 import phamhungan.com.phonetestv3.ui.adapter.ResultAdapter;
 import phamhungan.com.phonetestv3.util.DataUtil;
-import phamhungan.com.phonetestv3.util.EventUtil;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
 /**
@@ -20,13 +19,18 @@ import phamhungan.com.phonetestv3.util.ScreenUtil;
 public class ResultFragment extends BaseFragment {
     private ListView listResult;
     private String[] resultArray;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  super.onCreateView(inflater, container, savedInstanceState);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
         setFullScreen(false);
-        listResult = (ListView)view.findViewById(R.id.listView);
-        StringBuilder stringBuilder = new StringBuilder(EventUtil.getData(getActivity()));
+        listResult = (ListView) view.findViewById(R.id.listView);
+        StringBuilder stringBuilder = new StringBuilder(
+                getRootActivity().getSharedPreferences(TestActivity.DATANAME, getRootActivity().MODE_PRIVATE).getString(
+                        TestActivity.RESULTSTRING, null
+                )
+        );
         stringBuilder.deleteCharAt(0);
         resultArray = stringBuilder.toString().split(" ");
         return view;
@@ -36,8 +40,8 @@ public class ResultFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         super.setHasOptionsMenu(true);
-        TestActivity.instance.lnBottom.setVisibility(View.GONE);
-        listResult.setAdapter(new ResultAdapter(DataUtil.getListItem(getActivity()),resultArray, context, ScreenUtil.getScreenWidth(getActivity().getWindowManager())));
+        getRootActivity().lnBottom.setVisibility(View.GONE);
+        listResult.setAdapter(new ResultAdapter(DataUtil.getListItem(getActivity()), resultArray, getRootActivity(), ScreenUtil.getScreenWidth(getActivity().getWindowManager())));
     }
 
     @Override

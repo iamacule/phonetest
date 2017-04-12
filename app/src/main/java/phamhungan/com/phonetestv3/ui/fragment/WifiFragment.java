@@ -42,12 +42,12 @@ public class WifiFragment extends BaseFragment{
         setFullScreen(false);
         if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+            getRootActivity().lnBottom.setVisibility(View.VISIBLE);
         } else {
             super.setHasOptionsMenu(true);
         }
         lnMain = (LinearLayout)view.findViewById(R.id.lnMain);
-        myWifiManager = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
+        myWifiManager = (WifiManager)getRootActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         setLayout();
         return view;
     }

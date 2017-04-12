@@ -30,7 +30,7 @@ public class TouchFragment extends BaseFragment {
         btnInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestActivity.instance.toastResultNavigation();
+                getRootActivity().toastResultNavigation();
             }
         });
         return view;
@@ -40,7 +40,7 @@ public class TouchFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         setFullScreen(true);
-        TestActivity.instance.lnBottom.setVisibility(View.GONE);
+        getRootActivity().lnBottom.setVisibility(View.GONE);
     }
 
     @Override

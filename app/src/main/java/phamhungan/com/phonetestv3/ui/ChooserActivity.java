@@ -5,37 +5,24 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import butterknife.BindView;
-import phamhungan.com.phonetestv3.Main;
 import phamhungan.com.phonetestv3.R;
-import phamhungan.com.phonetestv3.util.AdUtil;
 import phamhungan.com.phonetestv3.util.DataUtil;
-import phamhungan.com.phonetestv3.util.DialogAsk;
 import phamhungan.com.phonetestv3.util.DialogInfo;
 import phamhungan.com.phonetestv3.util.DialogUtil;
-import phamhungan.com.phonetestv3.util.EventUtil;
 import phamhungan.com.phonetestv3.util.PermissionUtil;
 import phamhungan.com.phonetestv3.util.ResizeBitmap;
 import phamhungan.com.phonetestv3.util.ScreenUtil;
 
-import com.google.ads.mediation.admob.AdMobAdapter;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 /**
  * Created by MrAn PC on 20-Jan-16.
@@ -129,7 +116,7 @@ public class ChooserActivity extends MrAnActivity implements View.OnClickListene
             if (!checkRating())
                 DialogUtil.showRatingDialog(this);
             else
-                EventUtil.backPressExitApp(this);
+                moveTaskToBack(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

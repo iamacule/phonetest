@@ -45,7 +45,7 @@ public class SoundFragment extends BaseFragment {
         setFullScreen(false);
         if(DataUtil.whichTest){
             super.setHasOptionsMenu(false);
-            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+            getRootActivity().lnBottom.setVisibility(View.VISIBLE);
         }else {
             super.setHasOptionsMenu(true);
         }
@@ -55,7 +55,7 @@ public class SoundFragment extends BaseFragment {
         bitmap2 = ResizeBitmap.resize(BitmapFactory.decodeResource(getResources(), R.drawable.speaker2), ScreenUtil.getScreenWidth(getActivity().getWindowManager()) / 2);
         imgSpeaker.setImageBitmap(bitmap1);
         txtMessage = (TextView)view.findViewById(R.id.txtMessage);
-        ((TestActivity)getActivity()).setMaxMusicVolume();
+        getRootActivity().setMaxMusicVolume();
         action();
         return view;
     }

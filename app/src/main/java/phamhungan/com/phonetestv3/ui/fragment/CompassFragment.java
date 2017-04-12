@@ -39,7 +39,7 @@ public class CompassFragment extends BaseFragment implements SensorEventListener
         setFullScreen(false);
         if (DataUtil.whichTest) {
             super.setHasOptionsMenu(false);
-            TestActivity.instance.lnBottom.setVisibility(View.VISIBLE);
+            getRootActivity().lnBottom.setVisibility(View.VISIBLE);
         } else {
             super.setHasOptionsMenu(true);
         }
