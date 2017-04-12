@@ -194,35 +194,34 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
             Intent i = new Intent(this, ChooserActivity.class);
             startActivity(i);
         } else {
-            if(!DataUtil.whichTest){
-                if(fragment instanceof SoundFragment||
+            if (!DataUtil.whichTest) {
+                if (fragment instanceof SoundFragment ||
                         fragment instanceof VibrateFragment ||
                         fragment instanceof MicrophoneFragment ||
-                        fragment instanceof CameraFragment||
-                        fragment instanceof SensorFragment||
+                        fragment instanceof CameraFragment ||
+                        fragment instanceof SensorFragment ||
                         fragment instanceof WifiFragment ||
                         fragment instanceof BlueToothFragment ||
                         fragment instanceof BatteryFragment ||
-                        fragment instanceof CompassFragment){
+                        fragment instanceof CompassFragment) {
                     fragmentNavigator.clearHistory();
                     fragmentNavigator.goTo(new SingleTest());
+                } else if (fragment instanceof LCDScreenFragment ||
+                        fragment instanceof TouchFragment ||
+                        fragment instanceof MultiTouchFragment ||
+                        fragment instanceof BrightnessFragment) {
+                    intent.putExtra(fragment.getActivity().getResources().getString(R.string.which_test), fragment.getActivity().getResources().getString(R.string.single_test));
+                    startActivity(intent);
+                    finish();
+                } else {
+                    startActivity(intent);
+                    finish();
                 }
-                else if (fragment instanceof LCDScreenFragment||
-                        fragment instanceof TouchFragment||
-                        fragment instanceof MultiTouchFragment||
-                        fragment instanceof BrightnessFragment){
-                    intent.putExtra(fragment.getActivity().getResources().getString(R.string.which_test),fragment.getActivity().getResources().getString(R.string.single_test));
+            } else {
+                if (fragment instanceof ResultFragment) {
                     startActivity(intent);
                     finish();
-                }else {
-                    startActivity(intent);
-                    finish();
-                }
-            }else {
-                if(fragment instanceof ResultFragment){
-                    startActivity(intent);
-                    finish();
-                }else {
+                } else {
                     DialogAsk.Build dialog = new DialogAsk.Build(this);
                     dialog.setMessage(getString(R.string.full_test_quit_ask))
                             .setNegativeButton(getString(R.string.no))
@@ -265,13 +264,14 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
 
         Fragment fragment = fragmentNavigator.getActiveFragment();
         final Intent intent = new Intent(fragment.getActivity(), ChooserActivity.class);
-        if(fragment instanceof ResultFragment){
+        fragmentNavigator.goToRoot();
+        if (fragment instanceof ResultFragment) {
             fragment.getActivity().startActivity(intent);
-        }else {
+        } else {
             setData(data);
-            if(fragment instanceof BatteryFragment){
+            if (fragment instanceof BatteryFragment) {
                 fragmentNavigator.goTo(new ResultFragment());
-            }else {
+            } else {
                 if (fragment instanceof SoundFragment) {
                     fragmentNavigator.goTo(new VibrateFragment());
                 } else if (fragment instanceof VibrateFragment) {
@@ -292,11 +292,11 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
                     startActivity(intent);
                 } else if (fragment instanceof CameraFragment) {
                     fragmentNavigator.goTo(new SensorFragment());
-                }  else if (fragment instanceof SensorFragment) {
+                } else if (fragment instanceof SensorFragment) {
                     fragmentNavigator.goTo(new CompassFragment());
                 } else if (fragment instanceof CompassFragment) {
                     fragmentNavigator.goTo(new WifiFragment());
-                }else if (fragment instanceof WifiFragment) {
+                } else if (fragment instanceof WifiFragment) {
                     fragmentNavigator.goTo(new BlueToothFragment());
                 } else if (fragment instanceof LCDScreenFragment) {
                     fragmentNavigator.goTo(new LCDScreenFragment());
@@ -358,16 +358,17 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
 
     /**
      * Switch fragment
+     *
      * @param fragment
      */
-    public void switchFragment(Fragment fragment){
+    public void switchFragment(Fragment fragment) {
         fragmentNavigator.goTo(fragment);
     }
 
     /**
      * Clear data
      */
-    public void clearData (){
+    public void clearData() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(DATANAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
@@ -376,20 +377,21 @@ public class TestActivity extends MrAnActivity implements View.OnClickListener {
 
     /**
      * Set data
+     *
      * @param data
      */
-    private void setData(String data){
+    private void setData(String data) {
         SharedPreferences pref = getApplicationContext().getSharedPreferences(DATANAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         String dataStore = "";
-        dataStore = pref.getString(RESULTSTRING,null);
-        if(dataStore!=null){
-            dataStore = dataStore+data;
-        }else {
-            dataStore=data;
+        dataStore = pref.getString(RESULTSTRING, null);
+        if (dataStore != null) {
+            dataStore = dataStore + data;
+        } else {
+            dataStore = data;
         }
-        Log.d("Data : ",dataStore);
-        editor.putString(RESULTSTRING,dataStore);
+        Log.d("Data : ", dataStore);
+        editor.putString(RESULTSTRING, dataStore);
         editor.commit();
     }
 }

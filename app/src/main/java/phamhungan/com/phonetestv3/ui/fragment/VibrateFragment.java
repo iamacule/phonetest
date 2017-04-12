@@ -149,6 +149,10 @@ public class VibrateFragment extends BaseFragment {
     @Override
     public void onPause() {
         super.onPause();
+        stopAll();
+    }
+
+    public void stopAll() {
         if(thread.isAlive()){
             thread.interrupt();
         }
